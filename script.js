@@ -292,4 +292,4 @@ window.addEventListener('load', () => {
 
 document.onload = () => {
   document.getElementById('startButton').click()
-}
+} 
