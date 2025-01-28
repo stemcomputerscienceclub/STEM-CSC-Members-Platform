@@ -127,7 +127,7 @@ async function typeConsoleSequence() {
 
   // Final line
   await typeText('\nSystem ready...');
-  await typeText('\nRuning Season 2025...');
+  await typeText('\nRunning Season 2025...');
 
   // Stop the 23s track and automatically start ambient
   stopTypingSound();
