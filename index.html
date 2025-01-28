@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Stay Tuned - STEM CS Club</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome (for volume icons) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <!-- Local CSS -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- START SCREEN -->
+  <div class="start-screen" id="startScreen">
+    <button id="startButton" class="start-button">Start Experience</button>
+  </div>
+
+  <!-- SOUND CONTROL (Top Right) -->
+  <div class="sound-control">
+    <button id="soundToggle" class="sound-toggle">
+      <i class="fas fa-volume-up"></i>
+    </button>
+  </div>
+
+  <!-- MAIN CONTAINER -->
+  <div class="container hidden">
+    <!-- Terminal Section -->
+    <div class="terminal">
+      <div class="terminal-header">
+        <div class="terminal-buttons">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="terminal-title">terminal@stemcs</div>
+      </div>
+      <div class="terminal-content">
+        <div class="prompt">$</div>
+        <pre id="console-output"></pre>
+        <div class="cursor"></div>
+      </div>
+    </div>
+    
+    <!-- Main Content (Hidden initially) -->
+    <div class="main-content hidden">
+      <!-- Glitch Title -->
+      <div class="glitch-container">
+        <h1 class="stay-tuned glitch" data-text="Stay Tuned...">
+          Stay Tuned...
+        </h1>
+      </div>
+
+      <!-- Logo + Name -->
+      <div class="logo-container">
+        <div class="logo">
+          <!-- Replace this with your actual logo path -->
+          <img src="assets/logo.png" alt="STEM CS Club Logo" class="club-logo">
+        </div>
+        <div class="club-name">
+          <div class="name-container">
+            <span class="stem">STEM</span>
+            <span class="cs">Computer Science</span>
+            <span class="club">Club</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Quote -->
+      <div class="quote hidden">
+        <p class="quote-text">
+          "In an ever-evolving digital era, programming is your passport to the future."
+        </p>
+        <p class="attribution">— STEM CS Club</p>
+      </div>
+    </div>
+
+    <!-- Particles Canvas -->
+    <div class="particles-container">
+      <canvas id="particles"></canvas>
+    </div>
+  </div>
+
+  <!-- Optional Circuit Overlay -->
+  <div class="circuit-overlay"></div>
+
+  <!-- Local JS -->
+  <script src="script.js"></script>
+</body>
+</html>
