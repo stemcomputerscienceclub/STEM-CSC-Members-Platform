@@ -200,10 +200,11 @@ function playSound(name) {
  * Start the 23s "click" track for typing.
  */
 function startTypingSound() {
-  if (isSoundEnabled && sounds.click) {    
+  if (isSoundEnabled && sounds.click) {
     sounds.click.currentTime = 5;
-   
-    sounds.click.play().catch(() => { console.log(false);
+
+    sounds.click.play().catch((error) => {
+      console.log(error);
     });
   }
 }
@@ -278,15 +279,18 @@ window.addEventListener('load', () => {
   const container = document.querySelector('.container');
 
   if (startButton && startScreen && container) {
-    startScreen.style.opacity = '0';
-    setTimeout(() => {
-      startScreen.style.display = 'none';
+    startButton.onclick = () => {
 
-      // Show container
-      container.classList.remove('hidden');
+      startScreen.style.opacity = '0';
+      setTimeout(() => {
+        startScreen.style.display = 'none';
 
-      // Start the terminal sequence
-      typeConsoleSequence();
-    }, 500);
+        // Show container
+        container.classList.remove('hidden');
+
+        // Start the terminal sequence
+        typeConsoleSequence();
+      }, 500);
+    }
   }
 });
