@@ -158,15 +158,15 @@ async function typeConsoleSequence() {
 let isSoundEnabled = true;
 const sounds = {
   // The 23-second "click" track used for typing
-  click: new Audio('assets/sounds/click.mp3'),
+  click: new Audio('./assets/sounds/click.mp3'),
   // Hover is a short sfx if you want
-  hover: new Audio('assets/sounds/hover.mp3'),
+  hover: new Audio('./assets/sounds/hover.mp3'),
   // Ambient is the background music to play AFTER click track ends
-  ambient: new Audio('assets/sounds/ambient.mp3'),
+  ambient: new Audio('./assets/sounds/ambient.mp3'),
 };
 
 // Set volumes & looping
-sounds.click.volume = 0.05;
+sounds.click.volume = 0.5;
 sounds.click.loop = false;
 
 sounds.hover.volume = 0.0; // Increase if you want audible hover
@@ -200,7 +200,7 @@ function playSound(name) {
  * Start the 23s "click" track for typing.
  */
 function startTypingSound() {
-  if (isSoundEnabled && sounds.click) {
+  if (isSoundEnabled && sounds.click) {    
     sounds.click.currentTime = 0;
     sounds.click.play().catch(() => { });
   }
