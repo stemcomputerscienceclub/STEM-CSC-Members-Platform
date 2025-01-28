@@ -115,6 +115,7 @@ async function typeConsoleSequence() {
   await typeText('Initializing STEM CS Club...');
   await typeText('\nLoading assets...');
   await typeText('\nPreparing display...');
+  await typeText("\nWaiting for Members' Recruitment...");
 
   // Show logo (and optional hover sound)
   logoContainer.style.opacity = '1';
@@ -125,7 +126,8 @@ async function typeConsoleSequence() {
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
   // Final line
-  await typeText('\nSystem ready.');
+  await typeText('\nSystem ready...');
+  await typeText('\nRuning Season 2025...');
 
   // Stop the 23s track and automatically start ambient
   stopTypingSound();
@@ -274,22 +276,15 @@ window.addEventListener('load', () => {
   const container = document.querySelector('.container');
 
   if (startButton && startScreen && container) {
-    startButton.addEventListener('click', () => {
-      // Hide start screen
-      startScreen.style.opacity = '0';
-      setTimeout(() => {
-        startScreen.style.display = 'none';
+    startScreen.style.opacity = '0';
+    setTimeout(() => {
+      startScreen.style.display = 'none';
 
-        // Show container
-        container.classList.remove('hidden');
+      // Show container
+      container.classList.remove('hidden');
 
-        // Start the terminal sequence
-        typeConsoleSequence();
-      }, 500);
-    });
+      // Start the terminal sequence
+      typeConsoleSequence();
+    }, 500);
   }
 });
-
-document.onload = () => {
-  document.getElementById('startButton').click()
-} 
