@@ -202,6 +202,8 @@ function playSound(name) {
 function startTypingSound() {
   if (isSoundEnabled && sounds.click) {    
     sounds.click.currentTime = 0;
+    console.log(true);
+    
     sounds.click.play().catch(() => { });
   }
 }
