@@ -1,0 +1,62 @@
+{
+  "applications": [
+    {
+      "id": "app_001",
+      "userId": "user_001",
+      "status": "pending",
+      "submissionDate": "2025-01-31T07:33:58+02:00",
+      "lastModified": "2025-01-31T07:33:58+02:00",
+      "formData": {
+        "personalInformation": {
+          "fullName": "John Doe",
+          "whatsapp": "+1234567890",
+          "email": "john@example.com",
+          "grade": "11"
+        },
+        "trackSelection": {
+          "selectedTracks": [
+            "Web Development",
+            "Computational Science"
+          ]
+        },
+        "essays": {
+          "trackEssay": "I am passionate about programming and want to learn more.",
+          "techEssay": "The advancement of AI-powered code generation has transformed how developers work."
+        },
+        "experience": {
+          "hasExperience": true,
+          "experienceDetails": "I have built several personal projects using Python and JavaScript.",
+          "additionalInformation": "Excited to join the club and contribute my skills."
+        }
+      },
+      "review": {
+        "status": "pending",
+        "reviewerId": null,
+        "reviewDate": null,
+        "comments": [],
+        "score": null,
+        "decision": null
+      },
+      "timeline": [
+        {
+          "date": "2025-01-31T07:33:58+02:00",
+          "action": "submitted",
+          "details": "Application submitted by user"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "lastUpdated": "2025-01-31T07:33:58+02:00",
+    "totalApplications": 1,
+    "version": "1.0",
+    "applicationStatuses": [
+      "draft",
+      "pending",
+      "under_review",
+      "accepted",
+      "rejected",
+      "waitlisted"
+    ]
+  }
+}

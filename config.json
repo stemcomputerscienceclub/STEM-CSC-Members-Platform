@@ -1,0 +1,57 @@
+{
+  "application": {
+    "name": "STEM Computer Science Club",
+    "version": "1.0.0",
+    "environment": "development",
+    "maxApplicationsPerUser": 1
+  },
+  "authentication": {
+    "passwordMinLength": 6,
+    "passwordRequirements": {
+      "requireNumbers": true,
+      "requireSpecialChars": false,
+      "requireUppercase": false
+    },
+    "sessionTimeout": 3600,
+    "maxLoginAttempts": 5
+  },
+  "form": {
+    "sections": [
+      "personalInfo",
+      "academicInfo",
+      "programmingExperience",
+      "clubInterest"
+    ],
+    "requiredFields": {
+      "personalInfo": [
+        "fullName",
+        "email",
+        "phoneNumber"
+      ],
+      "academicInfo": [
+        "schoolName",
+        "grade"
+      ],
+      "programmingExperience": [
+        "yearsOfExperience",
+        "languages"
+      ],
+      "clubInterest": [
+        "reasonForJoining",
+        "availability"
+      ]
+    },
+    "validation": {
+      "email": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+      "phone": "^\\+?[1-9]\\d{1,14}$"
+    }
+  },
+  "notifications": {
+    "enabled": true,
+    "types": {
+      "applicationSubmitted": true,
+      "applicationUpdated": true,
+      "statusChanged": true
+    }
+  }
+}

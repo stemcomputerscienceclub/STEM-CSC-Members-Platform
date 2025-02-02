@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>STEM Computer Science Club - Membership Application</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <!-- External CSS -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <!-- Matrix Canvas Background -->
+  <canvas id="matrixCanvas" class="matrix-bg"></canvas>
+
+  <!-- Header -->
+  <header>
+    <nav>
+      <div class="logo"><img src="https://www.stemcsclub.org/imgs/official-logo.png" alt=""></div>
+      <!-- Optional sign-out button -->
+      <button id="signOut" class="cta-button">Sign Out</button>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <div class="page-tabs">
+      <a href="#instructions" class="tab-link" data-tab="instructions">
+        <i class="fas fa-book"></i>
+        Instructions
+      </a>
+      <a href="#application" class="tab-link active" data-tab="application">
+        <i class="fas fa-edit"></i>
+        Application
+      </a>
+    </div>
+
+    <div class="content-wrapper">
+      <!-- Instructions Section -->
+      <div id="instructions" class="tab-content">
+        <div class="content-container">
+          <div class="section-header">
+            <h2>Join STEM Computer Science Club!</h2>
+          </div>
+          <div class="instructions-text">
+            <p>
+              Welcome to STEM Computer Science Club! We're excited that you're interested
+              in joining our community of passionate programmers, developers, and tech
+              enthusiasts. Our club is dedicated to exploring various aspects of computer
+              science, from web development to artificial intelligence.
+            </p>
+            <p>
+              As a member of our club, you'll have the opportunity to participate in coding
+              workshops, hackathons, and collaborative projects. Whether you're a beginner
+              or an experienced programmer, there's a place for you in our community.
+            </p>
+          </div>
+
+          <div class="instructions-details">
+            <h3>What We Offer:</h3>
+            <div class="details-grid">
+              <div class="detail-item">
+                <i class="fas fa-laptop-code"></i>
+                <h4>Hands-on Learning</h4>
+                <p>
+                  Weekly coding sessions, workshops, and practical projects to enhance your
+                  programming skills.
+                </p>
+              </div>
+              <div class="detail-item">
+                <i class="fas fa-users"></i>
+                <h4>Community</h4>
+                <p>
+                  Connect with like-minded students, share knowledge, and work on exciting
+                  team projects.
+                </p>
+              </div>
+              <div class="detail-item">
+                <i class="fas fa-rocket"></i>
+                <h4>Innovation</h4>
+                <p>
+                  Explore cutting-edge technologies, participate in hackathons, and bring
+                  your ideas to life.
+                </p>
+              </div>
+            </div>
+
+            <h3 class="mt-4">Requirements:</h3>
+            <div class="details-grid">
+              <div class="detail-item">
+                <i class="fas fa-clock"></i>
+                <h4>Time Commitment</h4>
+                <p>
+                  Members are expected to attend weekly meetings and contribute to club
+                  projects.
+                </p>
+              </div>
+              <div class="detail-item">
+                <i class="fas fa-book"></i>
+                <h4>Learning Attitude</h4>
+                <p>
+                  Enthusiasm for learning and willingness to collaborate with fellow members.
+                </p>
+              </div>
+              <div class="detail-item">
+                <i class="fas fa-code-branch"></i>
+                <h4>Basic Skills</h4>
+                <p>
+                  Basic programming knowledge is helpful but not required. We welcome all
+                  skill levels!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Application Section -->
+      <div id="application" class="tab-content active">
+        <div class="content-container">
+          <!-- Countdown Section -->
+          <div class="countdown-section">
+            <div class="countdown-header">
+              <i class="fas fa-hourglass-half pulse"></i>
+              <h3>Applications close in:</h3>
+            </div>
+            <div class="countdown-container">
+              <div class="countdown-item">
+                <div class="countdown-ring">
+                  <span id="days">11</span>
+                  <svg>
+                    <circle cx="40" cy="40" r="35"></circle>
+                    <circle cx="40" cy="40" r="35"></circle>
+                  </svg>
+                </div>
+                <span class="label">Days</span>
+              </div>
+              <div class="countdown-item">
+                <div class="countdown-ring">
+                  <span id="hours">11</span>
+                  <svg>
+                    <circle cx="40" cy="40" r="35"></circle>
+                    <circle cx="40" cy="40" r="35"></circle>
+                  </svg>
+                </div>
+                <span class="label">Hours</span>
+              </div>
+              <div class="countdown-item">
+                <div class="countdown-ring">
+                  <span id="minutes">11</span>
+                  <svg>
+                    <circle cx="40" cy="40" r="35"></circle>
+                    <circle cx="40" cy="40" r="35"></circle>
+                  </svg>
+                </div>
+                <span class="label">Minutes</span>
+              </div>
+              <div class="countdown-item">
+                <div class="countdown-ring">
+                  <span id="seconds">11</span>
+                  <svg>
+                    <circle cx="40" cy="40" r="35"></circle>
+                    <circle cx="40" cy="40" r="35"></circle>
+                  </svg>
+                </div>
+                <span class="label">Seconds</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Application Form -->
+          <section id="apply" class="application-form">
+            <form id="membershipForm" class="form-container" novalidate>
+              <!-- Back Button -->
+              <button type="button" class="back-btn" style="opacity: 0; pointer-events: none;">
+                <i class="fas fa-arrow-left"></i>
+              </button>
+              <h2>
+                <!-- <i class="fas fa-code"></i> -->
+                <span class="code-tag">&lt;</span>Membership Application
+                <span class="code-tag">/&gt;</span>
+              </h2>
+
+              <!-- Step Progress Indicators -->
+              <div class="form-steps">
+                <div class="step active" data-step="1">
+                  <div class="step-number">1</div>
+                  <div class="step-title">Personal Info</div>
+                </div>
+                <div class="step-connector"></div>
+                <div class="step" data-step="2">
+                  <div class="step-number">2</div>
+                  <div class="step-title">Essays</div>
+                </div>
+                <div class="step-connector"></div>
+                <div class="step" data-step="3">
+                  <div class="step-number">3</div>
+                  <div class="step-title">Research Topics</div>
+                </div>
+                <div class="step-connector"></div>
+                <div class="step" data-step="4">
+                  <div class="step-number">4</div>
+                  <div class="step-title">Experience</div>
+                </div>
+              </div>
+
+              <!-- Actual Form -->
+              <form id="membershipForm" class="form-container" novalidate>
+                <!-- Step 1: Personal Information -->
+                <div class="form-section active" data-step="1">
+                  <h3><i class="fas fa-user-circle"></i> Personal Information</h3>
+
+                  <div class="form-group floating-input-group">
+                    <input type="text" id="fullName" name="fullName" placeholder=" " required />
+                    <label for="fullName" class="required">Full Name</label>
+                  </div>
+
+                  <div class="form-group floating-input-group">
+                    <input type="tel" id="whatsapp" name="whatsapp" placeholder=" " required />
+                    <label for="whatsapp" class="required">WhatsApp Number</label>
+                  </div>
+
+                  <div class="form-group floating-input-group">
+                    <input type="email" id="email" name="email" placeholder=" " required />
+                    <label for="email" class="required">School Email</label>
+                  </div>
+                </div>
+
+                <!-- Step 2: Essays -->
+                <div class="form-section" data-step="2">
+                  <h3><i class="fas fa-pen-fancy"></i> Essays</h3>
+
+                  <div class="form-group floating-input-group">
+                    <div class="question-title required">
+                      Why are you interested in Computer Science? (min 150 words)
+                    </div>
+                    <textarea id="techEssay" name="techEssay" placeholder=" " required data-min-words="150" data-max-words="250"></textarea>
+
+                    <div class="word-count">0/250 words</div>
+                  </div>
+
+                  <div class="form-group floating-input-group">
+                    <div class="question-title required">
+                      What do you hope to achieve by joining our CS Club? (min 150 words)
+                    </div>
+                    <textarea id="goalEssay" name="goalEssay" placeholder=" " required data-min-words="150" data-max-words="250"></textarea>
+                    <div class="word-count">0/250 words</div>
+                  </div>
+
+                </div>
+
+                <!-- Step 3: Research Topics -->
+                <div class="form-section" data-step="3">
+                  <h3><i class="fas fa-microscope"></i> Research Topics</h3>
+                  <div class="form-group  floating-input-group">
+                    <div class="question-title required">
+                      Explain how Machine Learning differs from Traditional Programming and give an example of its real-world application.
+                    </div>
+                    <div class="floating-input-group">
+                      <textarea id="mlResearch" name="mlResearch" placeholder=" " required data-min-words="150" data-max-words="250"></textarea>
+                      <div class="word-count">0/250 words</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Step 4: Experience -->
+                <div class="form-section" data-step="4">
+                  <h3><i class="fas fa-laptop-code"></i> Experience</h3>
+
+                  <div class="form-group">
+                    <label class="required">
+                      Do you have any experience in Computer Science?
+                    </label>
+                    <div class="radio-group">
+                      <div class="radio-option">
+                        <input type="radio" id="expYes" name="hasExperience" value="yes" required />
+                        <label for="expYes">Yes</label>
+                      </div>
+                      <div class="radio-option">
+                        <input type="radio" id="expNo" name="hasExperience" value="no" />
+                        <label for="expNo">No</label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group floating-input-group" id="experienceDetails" style="display: none;">
+                    <textarea id="experience" name="experience" placeholder=" " data-max-words="200"></textarea>
+                    <label for="experience">Please specify your experience</label>
+
+                  </div>
+
+                  <div class="form-group floating-input-group">
+                    <textarea id="additional" name="additional" placeholder=" " data-max-words="200"></textarea>
+                    <label for="additional">Additional Information (Optional)</label>
+
+                  </div>
+                </div>
+
+                <!-- Form Navigation -->
+                <!-- <form id="membershipForm" class="form-container" novalidate> -->
+                <!-- Back Button -->
+                <!-- <button type="button" class="back-btn" style="opacity: 0; pointer-events: none;">
+                  <i class="fas fa-arrow-left"></i>
+                </button> -->
+
+                <button type="button" class="next-btn">
+                  Next <i class="fas fa-arrow-right"></i>
+                </button>
+        </div>
+
+        <!-- Save Indicator -->
+        <div class="save-indicator">
+          <span class="save-text">
+            <i class="fas fa-shield-alt"></i>
+            Your data is securely saved as you type
+          </span>
+        </div>
+        </form>
+        </section>
+      </div>
+    </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>2025 STEM Computer Science Club. All rights reserved.</p>
+  </footer>
+
+  <!-- Success Modal -->
+  <div id="successModal" class="modal">
+    <div class="modal-content">
+      <i class="fas fa-check-circle"></i>
+      <h2>Application Submitted!</h2>
+      <p>Thank you for applying to STEM CSC 2025! We will reach out to you soon.</p>
+      <div class="loading-bar" id="loadingBar"></div>
+      <button onclick="closeModal()">Close</button>
+    </div>
+  </div>
+
+  <!-- Firebase SDKs & Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/11.2.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.2.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore-compat.js"></script>
+
+  <!-- Your external JS -->
+  <script src="form.js"></script>
+</body>
+
+</html>

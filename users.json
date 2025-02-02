@@ -1,0 +1,19 @@
+{
+  "users": [
+    {
+      "id": "user_001",
+      "fullName": "John Doe",
+      "email": "john@example.com",
+      "password": "hashed_password_here",
+      "createdAt": "2025-01-31T07:31:21+02:00",
+      "status": "active",
+      "hasSubmittedApplication": false,
+      "lastLogin": "2025-01-31T07:31:21+02:00"
+    }
+  ],
+  "metadata": {
+    "lastUpdated": "2025-01-31T07:31:21+02:00",
+    "totalUsers": 1,
+    "version": "1.0"
+  }
+}
