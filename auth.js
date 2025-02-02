@@ -134,6 +134,7 @@ loginForm.addEventListener('submit', async (e) => {
         console.log('Attempting to sign in with:', email);
         const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
         console.log('Sign in successful:', userCredential.user.uid);
+        localStorage.clear()
         localStorage.setItem("user", userCredential.user.uid)
 
         if (rememberMe) {
@@ -199,6 +200,7 @@ signupForm.addEventListener('submit', async (e) => {
         console.log('Attempting to create account with:', email);
         const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
         console.log('Account creation successful:', userCredential.user.uid);
+        localStorage.clear()
         localStorage.setItem("user", userCredential.user.uid)
         // Add user data to Firestore
         await firebase.firestore().collection('users').doc(userCredential.user.uid).set({
