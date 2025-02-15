@@ -18,31 +18,37 @@ firebase.initializeApp(firebaseConfig);
 firebase.auth().onAuthStateChanged(async (user) => {
   if (!user || localStorage.getItem("user") != user.uid) {
     // Redirect to auth page if not signed in
-    window.location.href = 'auth.html';
+    window.location.href = './';
     return;
   }
+
   if (localStorage.getItem("submitted")) {
-    document.getElementById("application").innerHTML = `<section id="apply" class="application-form">
-    <h1>Your application was already submitted, no decision update yet</h1></section>`
+    document.getElementById("application").innerHTML = `
+      <section id="apply" class="application-form">
+        <h1>Your application was already submitted, no decision update yet</h1>
+      </section>
+    `;
     return;
   }
-sessionStorage.setItem("email",user.email);
-  
+
+  sessionStorage.setItem("email", user.email);
+
   // Save to Firestore
   try {
-
     const db = firebase.firestore();
     const userDoc = await db.collection('applications').doc(user.email).get();
 
-    if (userDoc.exists) {
-      document.getElementById("application").innerHTML = `<section id="apply" class="application-form">
-      <h1>Your application was already submitted, no decision update yet</h1></section>`
+    if (!userDoc.exists) {
+      document.getElementById("application").innerHTML = `
+        <section id="apply" class="application-form">
+          <h1>Your application was already submitted, no decision update yet</h1>
+        </section>
+      `;
       return;
     }
+  } catch (err) {
+    console.error("Error checking application:", err);
   }
-  catch {
-  }
-  // if ()
 });
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -51,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
    **********************************************/
   const tabLinks = document.querySelectorAll('.tab-link');
   const tabContents = document.querySelectorAll('.tab-content');
+  console.log(tabLinks);
 
   function switchTab(tabId) {
     // Update active tab link
@@ -82,8 +89,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Check URL hash on page load
-  if (window.location.hash === '#instructions') {
-    switchTab('instructions');
+  if (window.location.hash === '#announcement') {
+    console.log("fdfsdfds");
+
+    switchTab('announcement');
   }
 
   // Handle initial hash on page load
@@ -136,13 +145,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Update next button
     if (nextBtn) {
       const isLastStep = currentStep === totalSteps;
-      nextBtn.innerHTML = isLastStep ?
-        '<i class="fas fa-paper-plane"></i> Submit' :
-        'Next <i class="fas fa-arrow-right"></i>';
+      nextBtn.innerHTML = isLastStep
+        ? '<i class="fas fa-paper-plane"></i> Submit'
+        : 'Next <i class="fas fa-arrow-right"></i>';
     }
 
     // Save form data
-    saveFormData();
   }
 
   function showInputError(element, message) {
@@ -178,12 +186,10 @@ document.addEventListener('DOMContentLoaded', () => {
       showInputError(parent, `Please write at least ${minWords} words.`);
       return false;
     }
-
     if (wordCount > maxWords) {
       showInputError(parent, `Please keep your response under ${maxWords} words.`);
       return false;
     }
-
     return true;
   }
 
@@ -237,9 +243,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Initialize on page load (after loading saved data)
-  // We'll define loadSavedFormData() below, then call updateFormSteps().
-
   // Back button
   if (backBtn) {
     backBtn.addEventListener('click', () => {
@@ -264,30 +267,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     });
-  }
-
-  /**********************************************
-   * Auto-Save Progress to localStorage
-   **********************************************/
-  function saveFormData() {
-    const formData = {
-      currentStep,
-      fields: {}
-    };
-
-    // For each input/textarea, store its value by "id"
-    document.querySelectorAll('#membershipForm input, #membershipForm textarea').forEach((el) => {
-      if (el.type === 'radio') {
-        // only store the checked radio
-        if (el.checked) {
-          formData.fields[el.id] = true;
-        }
-      } else {
-        formData.fields[el.id] = el.value;
-      }
-    });
-
-    localStorage.setItem('csclubFormData', JSON.stringify(formData));
   }
 
   function loadSavedFormData() {
@@ -330,8 +309,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Load any saved data first
-  loadSavedFormData();
   // Then update steps
   updateFormSteps();
   // Then set up auto-save
@@ -340,12 +317,12 @@ document.addEventListener('DOMContentLoaded', () => {
   /**********************************************
    * Word Count Functionality
    **********************************************/
-  function updateWordCount(textarea) {    
-    const wordCount = getWordCount(textarea.value);    
+  function updateWordCount(textarea) {
+    const wordCount = getWordCount(textarea.value);
     const maxWords = parseInt(textarea.getAttribute('data-max-words') || '200', 10);
     const minWords = parseInt(textarea.getAttribute('data-min-words') || '0', 10);
     const countDisplay = textarea.nextElementSibling;
-    
+
     if (countDisplay) {
       countDisplay.textContent = `${wordCount}/${maxWords} words`;
       if (wordCount < minWords || wordCount > maxWords) {
@@ -367,20 +344,22 @@ document.addEventListener('DOMContentLoaded', () => {
    **********************************************/
   const expRadios = document.querySelectorAll('input[name="hasExperience"]');
   const expDetails = document.getElementById('experienceDetails');
-  expRadios.forEach(radio => {
-    radio.addEventListener('change', () => {
-      const textarea = expDetails.querySelector('textarea');
-      if (radio.value === 'yes') {
-        expDetails.style.display = 'block';
-        textarea.required = true;
-      } else {
-        expDetails.style.display = 'none';
-        textarea.required = false;
-        textarea.value = '';
-      }
-      saveFormData();
+  if (expRadios && expDetails) {
+    expRadios.forEach(radio => {
+      radio.addEventListener('change', () => {
+        const textarea = expDetails.querySelector('textarea');
+        if (radio.value === 'yes') {
+          expDetails.style.display = 'block';
+          textarea.required = true;
+        } else {
+          expDetails.style.display = 'none';
+          textarea.required = false;
+          textarea.value = '';
+        }
+        saveFormData();
+      });
     });
-  });
+  }
 
   /**********************************************
    * Countdown Timer
@@ -421,19 +400,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const formMessage = document.createElement('div');
         formMessage.className = 'form-closed-message';
         formMessage.innerHTML = `
-            <div class="alert alert-warning" style="
-              background-color: #ff4444;
-              color: white;
-              padding: 1rem;
-              margin: 1rem 0;
-              border-radius: 8px;
-              text-align: center;
-              font-weight: bold;
-            ">
-              <i class="fas fa-clock"></i>
-              The application period has ended. Applications are no longer being accepted.
-            </div>
-          `;
+          <div class="alert alert-warning" style="
+            background-color: #ff4444;
+            color: white;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+          ">
+            <i class="fas fa-clock"></i>
+            The application period has ended. Applications are no longer being accepted.
+          </div>
+        `;
         form.insertBefore(formMessage, form.firstChild);
       }
 
@@ -441,11 +420,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const countdownSection = document.querySelector('.countdown-section');
       if (countdownSection) {
         countdownSection.innerHTML = `
-            <h3 style="color: #ff4444; text-align: center;">
-              <i class="fas fa-clock"></i>
-              Application period has ended
-            </h3>
-          `;
+          <h3 style="color: #ff4444; text-align: center;">
+            <i class="fas fa-clock"></i>
+            Application period has ended
+          </h3>
+        `;
       }
     }
   }
@@ -459,7 +438,7 @@ document.addEventListener('DOMContentLoaded', () => {
   firebase.auth().onAuthStateChanged((user) => {
     if (!user) {
       console.warn('User not signed in.');
-      // Optionally redirect
+      // Optionally redirect:
       // window.location.href = 'auth.html';
     } else {
       // If authenticated, load user data
@@ -467,30 +446,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  async function loadUserData(userId) {
-    
-    try {
-      const userDoc = await firebase.firestore().collection('users').doc(userId).get();
-      if (userDoc.exists) {
-        const userData = userDoc.data();
-        const fullNameInput = document.getElementById('fullName');
-        const emailInput = document.getElementById('email');
-        const whatsappInput = document.getElementById('whatsapp');
-        if (fullNameInput && userData.fullName) {
-          fullNameInput.value = userData.fullName;
+    async function loadUserData(userId) {
+      try {
+        const userDoc = await firebase.firestore().collection('applications').doc(userId).get();
+        if (userDoc.exists) {
+          const userData = userDoc.data();
+          const userNameSpan = document.getElementById('userName');
+          const congrats = document.querySelector('#congrats-text');
+          userNameSpan.textContent = userData.personalInformation.fullName;
+          congrats.innerHTML = userData.feedback;
+          console.log(userData);
         }
-        if (emailInput && userData.email) {
-          emailInput.value = userData.email;
-        }
-        if (whatsappInput && userData.whatsapp) {
-          whatsappInput.value = userData.whatsapp;
-        }
-        saveFormData(); // after autopopulating
+      } catch (error) {
+        console.error('Error loading user data:', error);
       }
-    } catch (error) {
-      console.error('Error loading user data:', error);
     }
-  }
 
   const signOutButton = document.getElementById('signOut');
   if (signOutButton) {
@@ -499,7 +469,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Clear any stored form data
         localStorage.removeItem('csclubFormData');
         await firebase.auth().signOut();
-        window.location.href = './auth.html';
+        window.location.href = './';
       } catch (error) {
         console.error('Error signing out:', error);
       }
@@ -510,71 +480,73 @@ document.addEventListener('DOMContentLoaded', () => {
    * Form Submission Handler
    **********************************************/
   const membershipForm = document.getElementById('membershipForm');
-  membershipForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    try {
-      const user = firebase.auth().currentUser;
-      if (!user) {
-        alert('Please sign in to submit your application.');
-        return;
-      }
-
-      // Gather form data
-      const formData = {
-        personalInformation: {
-          fullName: document.getElementById('fullName').value.trim(),
-          whatsapp: document.getElementById('whatsapp').value.trim(),
-          email: document.getElementById('email').value.trim()
-        },
-        essays: {
-          techEssay: document.getElementById('techEssay').value.trim(),
-          goalEssay: document.getElementById('goalEssay').value.trim()
-        },
-        research: {
-          machineLearning: document.getElementById('mlResearch').value.trim(),
-        },
-        experience: {
-          hasExperience:
-            document.querySelector('input[name="hasExperience"]:checked')?.value || '',
-          experienceDetails: document.getElementById('experience').value.trim(),
-          additional: document.getElementById('additional').value.trim()
-        },
-        metadata: {
-          userId: user.uid,
-          submittedAt: firebase.firestore.FieldValue.serverTimestamp(),
-          status: 'pending'
+  if (membershipForm) {
+    membershipForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      try {
+        const user = firebase.auth().currentUser;
+        if (!user) {
+          alert('Please sign in to submit your application.');
+          return;
         }
-      };
 
-      // Save to Firestore
-      const db = firebase.firestore();
-      console.log(formData.personalInformation.email);
-      
-      await db.collection('applications').doc(sessionStorage.getItem("email",user.email)    ).set(formData);
+        // Gather form data
+        const formData = {
+          personalInformation: {
+            fullName: document.getElementById('fullName').value.trim(),
+            whatsapp: document.getElementById('whatsapp').value.trim(),
+            email: document.getElementById('email').value.trim()
+          },
+          essays: {
+            techEssay: document.getElementById('techEssay').value.trim(),
+            goalEssay: document.getElementById('goalEssay').value.trim()
+          },
+          research: {
+            machineLearning: document.getElementById('mlResearch').value.trim(),
+          },
+          experience: {
+            hasExperience:
+              document.querySelector('input[name="hasExperience"]:checked')?.value || '',
+            experienceDetails: document.getElementById('experience').value.trim(),
+            additional: document.getElementById('additional').value.trim()
+          },
+          metadata: {
+            userId: user.uid,
+            submittedAt: firebase.firestore.FieldValue.serverTimestamp(),
+            status: 'pending'
+          }
+        };
 
-      // Show success modal
-      const successModal = document.getElementById('successModal');
-      if (successModal) {
-        successModal.classList.add('active');
-        // Animate loading bar
-        const loadingBar = document.getElementById('loadingBar');
-        if (loadingBar) {
-          setTimeout(() => {
-            loadingBar.style.width = '100%';
-          }, 100);
+        // Save to Firestore
+        const db = firebase.firestore();
+        await db.collection('applications')
+          .doc(sessionStorage.getItem("email", user.email))
+          .set(formData);
+
+        // Show success modal
+        const successModal = document.getElementById('successModal');
+        if (successModal) {
+          successModal.classList.add('active');
+          // Animate loading bar
+          const loadingBar = document.getElementById('loadingBar');
+          if (loadingBar) {
+            setTimeout(() => {
+              loadingBar.style.width = '100%';
+            }, 100);
+          }
         }
+
+        // Clear localStorage since submission is done
+        localStorage.removeItem('csclubFormData');
+
+        // Optionally reset form
+        membershipForm.reset();
+      } catch (error) {
+        console.error('Error submitting application:', error);
+        alert('An error occurred while submitting. Please try again.');
       }
-
-      // Clear localStorage since submission is done
-      localStorage.removeItem('csclubFormData');
-
-      // Optionally reset form
-      membershipForm.reset();
-    } catch (error) {
-      console.error('Error submitting application:', error);
-      alert('An error occurred while submitting. Please try again.');
-    }
-  });
+    });
+  }
 
   /**********************************************
    * Close Modal
@@ -583,12 +555,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const successModal = document.getElementById('successModal');
     if (successModal) {
       successModal.classList.remove('active');
-      localStorage.setItem('submitted', true)
-      document.getElementById("application").innerHTML = `<section id="apply" class="application-form">
-<h1>Your application was already submitted, no decision update yet</h1></section>`
+      localStorage.setItem('submitted', true);
+      document.getElementById("application").innerHTML = `
+        <section id="apply" class="application-form">
+          <h1>Your application was already submitted, no decision update yet</h1>
+        </section>
+      `;
     }
-    // Optionally redirect:
-    // window.location.href = 'index.html';
   };
 
   /**********************************************

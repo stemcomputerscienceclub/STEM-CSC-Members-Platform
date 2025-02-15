@@ -4,352 +4,783 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>STEM Computer Science Club - Membership Application</title>
+  <title>STEM Computer Science Club - Membership Application + Decision</title>
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Optional: A monospace font for Terminal text -->
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet" />
+
   <!-- Font Awesome -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
-  <!-- External CSS -->
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="./styles.css">
+
+  <style>
+    /***************************************************
+     * RESET & BASIC LAYOUT
+    ***************************************************/
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      /* Prevent horizontal scroll from confetti or tilt */
+      font-family: 'Inter', sans-serif;
+      background: #001B3D;
+      /* Dark background */
+    }
+
+    body.modal-open {
+      overflow-y: hidden;
+      /* Prevent background scroll if modal is open */
+    }
+
+    /* Basic page background or matrix effect (if wanted) */
+    #matrixCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.07;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /***************************************************
+     * HEADER
+    ***************************************************/
+    header {
+      background: #001B3D;
+      padding: 0.5rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header .logo img {
+      height: 50px;
+    }
+
+    .cta-button {
+      background: #00A3FF;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.6rem 1.3rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: background 0.3s, transform 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      cursor: pointer;
+    }
+
+    .cta-button:hover {
+      background: #0088cc;
+      transform: translateY(-2px);
+    }
+
+    /***************************************************
+     * PAGE TABS
+    ***************************************************/
+    .page-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      padding: 0.75rem;
+      background: #001B3D;
+    }
+
+    .tab-link {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      padding: 0.5rem 1.5rem;
+      border-radius: 4px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid transparent;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .tab-link.active {
+      color: #fff;
+      background: #00A3FF;
+      border-color: #00A3FF;
+    }
+
+    /***************************************************
+     * CONTENT WRAPPER
+    ***************************************************/
+    .content-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+
+    /***************************************************
+     * DECISION SECTION
+    ***************************************************/
+    #decisionSection {
+      margin-top: 2rem;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+      max-width: 600px;
+      margin: 2rem auto;
+    }
+
+    #decisionSection h2 {
+      color: #00A3FF;
+      margin-bottom: 0.5rem;
+      font-size: 1.3rem;
+    }
+
+    #decisionText {
+      color: #fff;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+
+    /***************************************************
+     * CONGRATS MODAL
+    ***************************************************/
+    .congrats-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(5px);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    .congrats-modal.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    .congrats-content {
+      position: relative;
+      background: #001B3D;
+      border: 2px solid #00A3FF;
+      border-radius: 15px;
+      max-width: 600px;
+      width: 90%;
+      padding: 2rem;
+      text-align: center;
+      color: #fff;
+      box-shadow: 0 0 25px rgba(0, 163, 255, 0.3);
+      transform: scale(0.9);
+      opacity: 0;
+      transition: transform 0.5s ease, opacity 0.5s ease;
+      animation: glowBlue 2s infinite alternate;
+    }
+
+    .congrats-modal.active .congrats-content {
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    @keyframes glowBlue {
+      0% {
+        box-shadow: 0 0 25px rgba(0, 163, 255, 0.2);
+      }
+
+      100% {
+        box-shadow: 0 0 45px rgba(0, 163, 255, 0.5);
+      }
+    }
+
+    .congrats-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.7);
+      transition: 0.3s;
+    }
+
+    .congrats-close:hover {
+      transform: scale(1.2);
+      color: #fff;
+    }
+
+    .congrats-title {
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      color: #00A3FF;
+      letter-spacing: 2px;
+    }
+
+    .congrats-title i {
+      margin: 0 0.3rem;
+      color: #00ccff;
+    }
+
+    .congrats-text {
+      font-size: 1.05rem;
+      text-align: start;
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+
+    .cta-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 1.5rem 0;
+      flex-wrap: wrap;
+    }
+
+    .cta-button-modal {
+      background: #00A3FF;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.6rem 1.3rem;
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: background 0.3s, transform 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .cta-button-modal:hover {
+      background: #0088cc;
+      transform: translateY(-3px);
+    }
+
+    /***************************************************
+     * CONFETTI
+    ***************************************************/
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background-color: #00A3FF;
+      animation: confetti-fall 3s linear infinite;
+      pointer-events: none;
+      will-change: transform;
+      z-index: 99999;
+    }
+
+    @keyframes confetti-fall {
+      0% {
+        transform: translateY(-120vh) rotate(0deg);
+      }
+
+      100% {
+        transform: translateY(100vh) rotate(720deg);
+      }
+    }
+
+    /***************************************************
+     * LOADING OVERLAY (Terminal Style)
+    ***************************************************/
+    .loading-overlay {
+      display: none;
+      /* shown dynamically */
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--background-color);
+      backdrop-filter: blur(2px);
+      z-index: 9998;
+      /* just below the modal z-index */
+      justify-content: center;
+      align-items: center;
+    }
+
+    .loading-overlay.active {
+      display: flex;
+    }
+
+    .terminal-container {
+      width: 90%;
+      max-width: 600px;
+      font-family: 'Source Code Pro', monospace;
+      color: #0f0;
+      /* classic green console text */
+    }
+
+    .terminal {
+      background: #111;
+      border-radius: 6px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+    }
+
+    .terminal-header {
+      background: #333;
+      padding: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .terminal-buttons {
+      display: flex;
+      gap: 6px;
+      margin-right: 1rem;
+    }
+
+    .terminal-button {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #ff5f56;
+      /* close */
+    }
+
+    .terminal-button.minimize {
+      background: #ffbd2e;
+    }
+
+    .terminal-button.maximize {
+      background: #27c93f;
+    }
+
+    .terminal-title {
+      color: #ccc;
+      margin-left: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .terminal-content {
+      padding: 1rem;
+      min-height: 200px;
+      position: relative;
+    }
+
+    #output div {
+      margin: 0.2rem 0;
+    }
+
+    #output .info {
+      color: #0f0;
+    }
+
+    #output .success {
+      color: #0f0;
+      font-weight: bold;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 8px;
+      height: 16px;
+      background: #0f0;
+      margin-left: 4px;
+      animation: blink 0.8s steps(1) infinite;
+    }
+
+    @keyframes blink {
+      0% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    /***************************************************
+     * RESPONSIVE
+    ***************************************************/
+    @media (max-width: 480px) {
+      .congrats-title {
+        font-size: 1.7rem;
+      }
+
+      .congrats-text {
+        font-size: 0.95rem;
+      }
+
+      #decisionSection h2 {
+        font-size: 1.1rem;
+      }
+
+      .terminal-content {
+        min-height: 150px;
+      }
+    }
+  </style>
 </head>
 
 <body>
-  <!-- Matrix Canvas Background -->
-  <canvas id="matrixCanvas" class="matrix-bg"></canvas>
+  <!-- Optional Matrix BG -->
+  <canvas id="matrixCanvas"></canvas>
 
   <!-- Header -->
   <header>
     <nav>
-      <div class="logo"><img src="https://www.stemcsclub.org/imgs/official-logo.png" alt=""></div>
-      <!-- Optional sign-out button -->
+      <div class="logo">
+        <img src="https://www.stemcsclub.org/imgs/official-logo.png" alt="STEM CS Club Logo">
+      </div>
       <button id="signOut" class="cta-button">Sign Out</button>
     </nav>
   </header>
 
+  <!-- Page Tabs -->
+  <div class="page-tabs">
+    <a href="#announcement" class="tab-link" data-tab="announcement">
+      <i class="fas fa-book"></i>
+      Announcement
+    </a>
+    <a href="#application" class="tab-link active" data-tab="application">
+      <i class="fas fa-edit"></i>
+      Application
+    </a>
+  </div>
+
   <!-- Main Content -->
   <main>
-    <div class="page-tabs">
-      <a href="#instructions" class="tab-link" data-tab="instructions">
-        <i class="fas fa-book"></i>
-        Instructions
-      </a>
-      <a href="#application" class="tab-link active" data-tab="application">
-        <i class="fas fa-edit"></i>
-        Application
-      </a>
-    </div>
-
     <div class="content-wrapper">
-      <!-- Instructions Section -->
-      <div id="instructions" class="tab-content">
+      <!-- announcement Section -->
+      <div id="announcement" class="tab-content">
         <div class="content-container">
-          <div class="section-header">
-            <h2>Join STEM Computer Science Club!</h2>
-          </div>
-          <div class="instructions-text">
-            <p>
-              Welcome to STEM Computer Science Club! We're excited that you're interested
-              in joining our community of passionate programmers, developers, and tech
-              enthusiasts. Our club is dedicated to exploring various aspects of computer
-              science, from web development to artificial intelligence.
-            </p>
-            <p>
-              As a member of our club, you'll have the opportunity to participate in coding
-              workshops, hackathons, and collaborative projects. Whether you're a beginner
-              or an experienced programmer, there's a place for you in our community.
-            </p>
-          </div>
-
-          <div class="instructions-details">
-            <h3>What We Offer:</h3>
-            <div class="details-grid">
-              <div class="detail-item">
-                <i class="fas fa-laptop-code"></i>
-                <h4>Hands-on Learning</h4>
-                <p>
-                  Weekly coding sessions, workshops, and practical projects to enhance your
-                  programming skills.
-                </p>
-              </div>
-              <div class="detail-item">
-                <i class="fas fa-users"></i>
-                <h4>Community</h4>
-                <p>
-                  Connect with like-minded students, share knowledge, and work on exciting
-                  team projects.
-                </p>
-              </div>
-              <div class="detail-item">
-                <i class="fas fa-rocket"></i>
-                <h4>Innovation</h4>
-                <p>
-                  Explore cutting-edge technologies, participate in hackathons, and bring
-                  your ideas to life.
-                </p>
-              </div>
-            </div>
-
-            <h3 class="mt-4">Requirements:</h3>
-            <div class="details-grid">
-              <div class="detail-item">
-                <i class="fas fa-clock"></i>
-                <h4>Time Commitment</h4>
-                <p>
-                  Members are expected to attend weekly meetings and contribute to club
-                  projects.
-                </p>
-              </div>
-              <div class="detail-item">
-                <i class="fas fa-book"></i>
-                <h4>Learning Attitude</h4>
-                <p>
-                  Enthusiasm for learning and willingness to collaborate with fellow members.
-                </p>
-              </div>
-              <div class="detail-item">
-                <i class="fas fa-code-branch"></i>
-                <h4>Basic Skills</h4>
-                <p>
-                  Basic programming knowledge is helpful but not required. We welcome all
-                  skill levels!
-                </p>
-              </div>
-            </div>
-          </div>
+          <h2 style="color:#00A3FF;">STEM Computer Science Club:</h2>
+          <p style="color:#fff;">
+            Decisions are out! </p>
         </div>
       </div>
 
       <!-- Application Section -->
       <div id="application" class="tab-content active">
         <div class="content-container">
-          <!-- Countdown Section -->
-          <div class="countdown-section">
-            <div class="countdown-header">
-              <i class="fas fa-hourglass-half pulse"></i>
-              <h3>Applications close in:</h3>
-            </div>
-            <div class="countdown-container">
-              <div class="countdown-item">
-                <div class="countdown-ring">
-                  <span id="days">11</span>
-                  <svg>
-                    <circle cx="40" cy="40" r="35"></circle>
-                    <circle cx="40" cy="40" r="35"></circle>
-                  </svg>
-                </div>
-                <span class="label">Days</span>
-              </div>
-              <div class="countdown-item">
-                <div class="countdown-ring">
-                  <span id="hours">11</span>
-                  <svg>
-                    <circle cx="40" cy="40" r="35"></circle>
-                    <circle cx="40" cy="40" r="35"></circle>
-                  </svg>
-                </div>
-                <span class="label">Hours</span>
-              </div>
-              <div class="countdown-item">
-                <div class="countdown-ring">
-                  <span id="minutes">11</span>
-                  <svg>
-                    <circle cx="40" cy="40" r="35"></circle>
-                    <circle cx="40" cy="40" r="35"></circle>
-                  </svg>
-                </div>
-                <span class="label">Minutes</span>
-              </div>
-              <div class="countdown-item">
-                <div class="countdown-ring">
-                  <span id="seconds">11</span>
-                  <svg>
-                    <circle cx="40" cy="40" r="35"></circle>
-                    <circle cx="40" cy="40" r="35"></circle>
-                  </svg>
-                </div>
-                <span class="label">Seconds</span>
-              </div>
-            </div>
-          </div>
+          <h2 style="color:#fff;">Membership Application</h2>
+          <p style="color:#ccc;">Thanks for applying!</p>
 
-          <!-- Application Form -->
-          <section id="apply" class="application-form">
-            <form id="membershipForm" class="form-container" novalidate>
-              <!-- Back Button -->
-              <button type="button" class="back-btn" style="opacity: 0; pointer-events: none;">
-                <i class="fas fa-arrow-left"></i>
-              </button>
-              <h2>
-                <!-- <i class="fas fa-code"></i> -->
-                <span class="code-tag">&lt;</span>Membership Application
-                <span class="code-tag">/&gt;</span>
-              </h2>
-
-              <!-- Step Progress Indicators -->
-              <div class="form-steps">
-                <div class="step active" data-step="1">
-                  <div class="step-number">1</div>
-                  <div class="step-title">Personal Info</div>
-                </div>
-                <div class="step-connector"></div>
-                <div class="step" data-step="2">
-                  <div class="step-number">2</div>
-                  <div class="step-title">Personal Reflection</div>
-                </div>
-                <div class="step-connector"></div>
-                <div class="step" data-step="3">
-                  <div class="step-number">3</div>
-                  <div class="step-title">Research Topics</div>
-                </div>
-                <div class="step-connector"></div>
-                <div class="step" data-step="4">
-                  <div class="step-number">4</div>
-                  <div class="step-title">Experience</div>
-                </div>
-              </div>
-
-              <!-- Actual Form -->
-              <form id="membershipForm" class="form-container" novalidate>
-                <!-- Step 1: Personal Information -->
-                <div class="form-section active" data-step="1">
-                  <h3><i class="fas fa-user-circle"></i> Personal Information:</h3>
-
-                  <div class="form-group floating-input-group">
-                    <input type="text" id="fullName" name="fullName" placeholder=" " required />
-                    <label for="fullName" class="required">Full Name</label>
-                  </div>
-
-                  <div class="form-group floating-input-group">
-                    <input type="tel" id="whatsapp" name="whatsapp" placeholder=" " required />
-                    <label for="whatsapp" class="required">WhatsApp Number</label>
-                  </div>
-
-                  <div class="form-group floating-input-group">
-                    <input type="email" id="email" name="email" placeholder=" " required />
-                    <label for="email" class="required">School Email</label>
-                  </div>
-                </div>
-
-                <!-- Step 2: Essays -->
-                <div class="form-section" data-step="2">
-                  <h3><i class="fas fa-pen-fancy"></i>  Personal Reflection:</h3>
-
-                  <div class="form-group floating-input-group">
-                    <div class="question-title required">
-                      Tell us about your journey in computer science so far. What first sparked your interest in CS? Share some challenges or achievements along the way, and explain what your long-term goals are. How do you think this mentorship can help you reach these goals? (min. 150 words)
-                    </div>
-                    <textarea id="techEssay" name="techEssay" placeholder=" " required data-min-words="150" data-max-words="250"></textarea>
-
-                    <div class="word-count">0/250 words</div>
-                  </div>
-
-                  <div class="form-group floating-input-group">
-                    <div class="question-title required">
-                      Imagine you are an innovator using technology to solve real problems. Choose a challenge in your community or in the world that you believe technology can help fix. Describe your idea or project, explain how it works, and tell us why you believe it could make a real difference. (min. 150 words)
-                    </div>
-                    <textarea id="goalEssay" name="goalEssay" placeholder=" " required data-min-words="150" data-max-words="250"></textarea>
-                    <div class="word-count">0/250 words</div>
-                  </div>
-
-                </div>
-
-                <!-- Step 3: Research Topics -->
-                <div class="form-section" data-step="3">
-                  <h3><i class="fas fa-microscope"></i> Research Essay:</h3>
-                  <div class="form-group  floating-input-group">
-                    <div class="question-title required">
-                      Pick a recent breakthrough or trend in computer science—like quantum computing, deep learning, or blockchain. Write about why this development is important, how it could change industries or everyday life, and discuss any challenges or ethical issues it might bring. (min. 200 words)
-                    </div>
-                    <div class="floating-input-group">
-                      <textarea id="mlResearch" name="mlResearch" placeholder=" " required data-min-words="200" data-max-words="350"></textarea>
-                      <div class="word-count">0/350 words</div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Step 4: Experience -->
-                <div class="form-section" data-step="4">
-                  <h3><i class="fas fa-laptop-code"></i> Experience:</h3>
-
-                  <div class="form-group">
-                    <label class="required">
-                      Do you have any experience in Computer Science?
-                    </label>
-                    <div class="radio-group">
-                      <div class="radio-option">
-                        <input type="radio" id="expYes" name="hasExperience" value="yes" required />
-                        <label for="expYes">Yes</label>
-                      </div>
-                      <div class="radio-option">
-                        <input type="radio" id="expNo" name="hasExperience" value="no" />
-                        <label for="expNo">No</label>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="form-group floating-input-group" id="experienceDetails" style="display: none;">
-                    <textarea id="experience" name="experience" placeholder=" " data-max-words="200"></textarea>
-                    <label for="experience">Please specify your experience</label>
-
-                  </div>
-
-                  <div class="form-group floating-input-group">
-                    <textarea id="additional" name="additional" placeholder=" " data-max-words="200"></textarea>
-                    <label for="additional">Additional Information (Optional)</label>
-
-                  </div>
-                </div>
-
-                <!-- Form Navigation -->
-                <!-- <form id="membershipForm" class="form-container" novalidate> -->
-                <!-- Back Button -->
-                <!-- <button type="button" class="back-btn" style="opacity: 0; pointer-events: none;">
-                  <i class="fas fa-arrow-left"></i>
-                </button> -->
-
-                <button type="button" class="next-btn">
-                  Next <i class="fas fa-arrow-right"></i>
-                </button>
+          <!-- DECISION SECTION -->
+          <section id="decisionSection">
+            <h2>Application Decision</h2>
+            <p id="decisionText">Decisions are out.</p>
+            <button class="cta-button" id="viewDecisionBtn">View Decision</button>
+          </section>
         </div>
-
-        <!-- Save Indicator -->
-        <div class="save-indicator">
-          <span class="save-text">
-            <i class="fas fa-shield-alt"></i>
-            Your data is securely saved as you type
-          </span>
-        </div>
-        </form>
-        </section>
       </div>
-    </div>
     </div>
   </main>
 
   <!-- Footer -->
-  <footer>
-    <p>2025 STEM Computer Science Club. All rights reserved.</p>
+  <footer style="text-align:center; color:#fff; padding:1rem;">
+    2025 STEM Computer Science Club. All rights reserved.
   </footer>
 
-  <!-- Success Modal -->
-  <div id="successModal" class="modal">
-    <div class="modal-content">
-      <i class="fas fa-check-circle"></i>
-      <h2>Application Submitted!</h2>
-      <p>Thank you for applying to STEM CSC 2025! We will reach out to you soon.</p>
-      <div class="loading-bar" id="loadingBar"></div>
-      <button onclick="closeModal()">Close</button>
+  <!-- =============== IMPROVED CONGRATS MODAL =============== -->
+  <div id="congratsModal" class="congrats-modal">
+    <div class="congrats-content">
+      <span id="closeCongrats" class="congrats-close">&times;</span>
+
+      <!-- Title -->
+      <h1 class="congrats-title">
+        <i class="fas fa-star"></i> CONGRATULATIONS! <i class="fas fa-star"></i>
+      </h1>
+
+      <!-- Personalized greeting (Name injected below) -->
+      <p class="congrats-text" id="personalizedGreet" style="font-weight:600; font-size:1.1rem;">
+        Welcome <span id="userName" style="color:#00CCFF;">Applicant</span>!
+      </p>
+
+      <!-- Personalized feedback section -->
+      <p  class="congrats-text" id="congrats-text">
+      </p>
+      
+      <p class="congrats-text">
+    Note: These Decisions are graded completely with Generative-AI technics, and reviewed manually by the human factor to ensure effciency & ethics.
+      </p>
+      <!-- CTA Buttons -->
+      <div class="cta-buttons">
+        <a href="https://discord.com/invite/hfGvkXZ4" class="cta-button-modal" target="_blank">
+          <i class="fab fa-discord"></i> Join Our Discord
+        </a>
+        <a href="https://chat.whatsapp.com/KyJwxt9Ost57cG2pfczGwx" class="cta-button-modal" target="_blank" rel="noopener noreferrer">
+          <i class="fab fa-whatsapp"></i> WhatsApp Group
+        </a>
+      </div>
     </div>
   </div>
 
-  <!-- Firebase SDKs & Scripts -->
+  <!-- =============== LOADING OVERLAY =============== -->
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="terminal-container">
+      <div class="terminal">
+        <div class="terminal-header">
+          <div class="terminal-buttons">
+            <span class="terminal-button close"></span>
+            <span class="terminal-button minimize"></span>
+            <span class="terminal-button maximize"></span>
+          </div>
+          <div class="terminal-title">STEM CS Club</div>
+        </div>
+        <div class="terminal-content">
+          <div id="output"></div>
+          <div class="cursor"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AUDIO (Replace the src with your own .mp3 file) -->
+  <audio id="decisionMusic" src="./voice.mp3"></audio>
+
+  <!-- Firebase scripts if needed -->
   <script src="https://www.gstatic.com/firebasejs/11.2.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.2.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore-compat.js"></script>
+  <script src="./form.js"></script>
+  <script>
+    /**********************************************
+     * EXAMPLE DECISION LOGIC & PERSONALIZED NAME
+     **********************************************/
+    // Suppose you fetch these from the server or store them:
+    let decisionMade = true; // false => "No decision yet"
 
-  <!-- Your external JS -->
-  <script src="form.js"></script>
+    const decisionText = document.getElementById('decisionText');
+    const viewDecisionBtn = document.getElementById('viewDecisionBtn');
+    const congratsModal = document.getElementById('congratsModal');
+    const closeCongratsBtn = document.getElementById('closeCongrats');
+    const body = document.body;
+
+
+    /**********************************************
+     * TERMINAL SIMULATOR (with custom typing speed)
+     **********************************************/
+    class TerminalSimulator {
+      constructor(outputElement, cursorElement, commands, callbackEnd) {
+        this.output = outputElement;
+        this.cursor = cursorElement;
+        this.commands = commands;
+        this.callbackEnd = callbackEnd;
+        this.defaultTypeSpeed = 50; // default ms per character
+      }
+
+      sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+
+      async typeText(text, typeClass, typingSpeed) {
+        const line = document.createElement('div');
+        line.classList.add(typeClass);
+        this.output.appendChild(line);
+
+        for (let char of text) {
+          // Type the current character
+          line.textContent += char;
+          await this.sleep(typingSpeed);
+
+          // If it's a comma, add an extra delay
+          if (char === ',') {
+            await this.sleep(1200); // 500 ms extra pause (adjust as you wish)
+          }
+        }
+      }
+
+      async runSimulation() {
+        for (let cmd of this.commands) {
+          const delay = cmd.delay || 500;
+          const typingSpeed = cmd.speed || this.defaultTypeSpeed;
+
+          await this.sleep(delay);
+          await this.typeText(cmd.text, cmd.type || 'info', typingSpeed);
+        }
+        if (this.callbackEnd) {
+          this.callbackEnd();
+        }
+      }
+    }
+    /**********************************************
+     * CONFETTI LOGIC
+     **********************************************/
+    let confettiInterval;
+
+    function createConfetti() {
+      const confettiColors = ['#00A3FF', '#0088cc', '#00FFFF', '#1E90FF', '#6495ED'];
+      const c = document.createElement('div');
+      c.className = 'confetti';
+
+      // random horizontal position
+      c.style.left = Math.random() * 100 + 'vw';
+
+      // random color
+      const color = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+      c.style.backgroundColor = color;
+
+      // random shape
+      const shape = Math.floor(Math.random() * 60);
+      c.style.borderRadius = shape + '%';
+
+      // random size
+      const size = Math.floor(Math.random() * 10) + 8;
+      c.style.width = size + 'px';
+      c.style.height = size + 'px';
+
+      // random rotation
+      const rotate = Math.floor(Math.random() * 360);
+      c.style.transform = `rotate(${rotate}deg)`;
+
+      document.body.appendChild(c);
+      c.addEventListener('animationend', () => c.remove());
+    }
+
+    function startConfetti() {
+      confettiInterval = setInterval(createConfetti, 250);
+    }
+
+    function stopConfetti() {
+      clearInterval(confettiInterval);
+    }
+
+    /**********************************************
+     * "View Decision" button logic
+     **********************************************/
+    viewDecisionBtn.addEventListener('click', () => {
+      // If no decision yet, display a message
+      if (!decisionMade) {
+        decisionText.textContent = 'No decision yet. Please wait!';
+        return;
+      }
+
+      // If accepted => show "loading overlay" + typed "terminal" effect
+      body.classList.add('modal-open');
+      document.getElementById('loadingOverlay').classList.add('active');
+
+      // Start the music
+      const music = document.getElementById('decisionMusic');
+      music.currentTime = 0;
+      music.play().catch(err => {
+        console.warn("Autoplay failed. User gesture might be required:", err);
+      });
+
+      // Prepare the terminal simulation
+      const outputElement = document.getElementById('output');
+      const cursorElement = document.querySelector('.cursor');
+
+      outputElement.innerHTML = '';
+      const commands = [{
+          text: '> Welcome to STEM Computer Science Club...',
+          type: 'info',
+          speed: 60
+        },
+        {
+          text: '> We are on systems informations...',
+          type: 'info',
+          delay: 700,
+          speed: 70
+        },
+        {
+          text: '> Make dreams come true with action...',
+          type: 'info',
+          delay: 500,
+          speed: 50
+        },
+        {
+          text: '> Logic is our weapon, and business is our battlefield...',
+          type: 'info',
+          delay: 500,
+          speed: 60
+        },
+        {
+          text: '> Decision found: ACCEPTED',
+          type: 'success',
+          delay: 1000,
+          speed: 100
+        }
+      ];
+
+      // Create the simulator
+      const terminal = new TerminalSimulator(
+        outputElement,
+        cursorElement,
+        commands,
+        () => {
+          // Once all commands typed => hide overlay, show modal
+          document.getElementById('loadingOverlay').classList.remove('active');
+          congratsModal.classList.add('active');
+          startConfetti();
+        }
+      );
+
+      // Start the typing simulation
+      terminal.runSimulation();
+    });
+
+    /**********************************************
+     * Close the "Congrats" modal
+     **********************************************/
+    closeCongratsBtn.onclick = () => {
+      congratsModal.classList.remove('active');
+      body.classList.remove('modal-open');
+      stopConfetti();
+      // Optionally pause/stop the music
+      const music = document.getElementById('decisionMusic');
+      music.pause();
+    };
+
+    // Close modal if the user clicks outside the .congrats-content
+    window.addEventListener('click', (e) => {
+      if (e.target === congratsModal) {
+        congratsModal.classList.remove('active');
+        body.classList.remove('modal-open');
+        stopConfetti();
+        const music = document.getElementById('decisionMusic');
+        music.pause();
+      }
+    });
+
+
+    // Close if clicking outside the modal content
+    window.addEventListener('click', (e) => {
+      if (e.target === congratsModal) {
+        congratsModal.classList.remove('active');
+        body.classList.remove('modal-open');
+        stopConfetti();
+        const music = document.getElementById('decisionMusic');
+        music.pause();
+      }
+    });
+  </script>
 </body>
 
 </html>
