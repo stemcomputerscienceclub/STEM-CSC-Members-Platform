@@ -4,13 +4,12 @@
 
 // Firebase Configuration and Initialization
 const firebaseConfig = {
-  apiKey: "AIzaSyADstvloS_gv1V09WrsiBIpqXVC1iDnq4I",
-  authDomain: "form-cs.firebaseapp.com",
-  projectId: "form-cs",
-  storageBucket: "form-cs.firebasestorage.app", // Adjust if needed
-  messagingSenderId: "846877894058",
-  appId: "1:846877894058:web:ed3e1e2f5245214fea37d3",
-  measurementId: "G-RQ8F3FR7LB"
+  apiKey: "AIzaSyAASMdxsb__WKXJYtNu2A-CFLADqCwRGo4",
+  authDomain: "stem-csc-members.firebaseapp.com",
+  projectId: "stem-csc-members",
+  storageBucket: "stem-csc-members.firebasestorage.app",
+  messagingSenderId: "523867315988",
+  appId: "1:523867315988:web:ced7474cd7f4f4e2d4ec01"
 };
 firebase.initializeApp(firebaseConfig);
 
@@ -18,37 +17,31 @@ firebase.initializeApp(firebaseConfig);
 firebase.auth().onAuthStateChanged(async (user) => {
   if (!user || localStorage.getItem("user") != user.uid) {
     // Redirect to auth page if not signed in
-    window.location.href = './';
+    window.location.href = 'auth.html';
     return;
   }
-
   if (localStorage.getItem("submitted")) {
-    document.getElementById("application").innerHTML = `
-      <section id="apply" class="application-form">
-        <h1>Your application was already submitted, no decision update yet</h1>
-      </section>
-    `;
+    document.getElementById("application").innerHTML = `<section id="apply" class="application-form">
+    <h1>Your application was already submitted, no decision update yet</h1></section>`
     return;
   }
-
-  sessionStorage.setItem("email", user.email);
-
+sessionStorage.setItem("email",user.email);
+  
   // Save to Firestore
   try {
+
     const db = firebase.firestore();
     const userDoc = await db.collection('applications').doc(user.email).get();
 
-    if (!userDoc.exists) {
-      document.getElementById("application").innerHTML = `
-        <section id="apply" class="application-form">
-          <h1>Your application was already submitted, no decision update yet</h1>
-        </section>
-      `;
+    if (userDoc.exists) {
+      document.getElementById("application").innerHTML = `<section id="apply" class="application-form">
+      <h1>Your application was already submitted, no decision update yet</h1></section>`
       return;
     }
-  } catch (err) {
-    console.error("Error checking application:", err);
   }
+  catch {
+  }
+  // if ()
 });
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -57,7 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
    **********************************************/
   const tabLinks = document.querySelectorAll('.tab-link');
   const tabContents = document.querySelectorAll('.tab-content');
-  console.log(tabLinks);
 
   function switchTab(tabId) {
     // Update active tab link
@@ -89,10 +81,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Check URL hash on page load
-  if (window.location.hash === '#announcement') {
-    console.log("fdfsdfds");
-
-    switchTab('announcement');
+  if (window.location.hash === '#instructions') {
+    switchTab('instructions');
   }
 
   // Handle initial hash on page load
@@ -112,6 +102,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const backBtn = document.querySelector('.back-btn');
   const nextBtn = document.querySelector('.next-btn');
 
+document.addEventListener("change", (e) => {
+  const checkbox = e.target;
+
+  if (!checkbox.matches('input[type="checkbox"][data-target]')) return;
+
+  const section = document.getElementById(checkbox.dataset.target);
+  if (!section) return;
+
+  section.classList.toggle("active", checkbox.checked);
+
+  section.querySelectorAll("[required]").forEach(el => {
+    el.required = checkbox.checked;
+  });
+});
+
   function updateFormSteps() {
     // Hide all sections
     formSections.forEach(section => section.classList.remove('active'));
@@ -119,7 +124,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Show current section
     const currentSection = document.querySelector(`.form-section[data-step="${currentStep}"]`);
     if (currentSection) currentSection.classList.add('active');
-
     // Update step indicators
     const steps = document.querySelectorAll('.step');
     steps.forEach((step, index) => {
@@ -134,6 +138,21 @@ document.addEventListener('DOMContentLoaded', () => {
         step.classList.remove('completed', 'active');
       }
     });
+    if (currentStep === 3) {
+      document
+        .querySelectorAll('input[type="checkbox"][data-target]')
+        .forEach(cb => {
+          const section = document.getElementById(cb.dataset.target);
+          if (!section) return;
+
+          section.classList.toggle("active", cb.checked);
+
+          section.querySelectorAll("[required]").forEach(el => {
+            el.required = cb.checked;
+          });
+        });
+    }
+
 
     // Update back button
     if (backBtn) {
@@ -145,12 +164,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Update next button
     if (nextBtn) {
       const isLastStep = currentStep === totalSteps;
-      nextBtn.innerHTML = isLastStep
-        ? '<i class="fas fa-paper-plane"></i> Submit'
-        : 'Next <i class="fas fa-arrow-right"></i>';
+      nextBtn.innerHTML = isLastStep ?
+        '<i class="fas fa-paper-plane"></i> Submit' :
+        'Next <i class="fas fa-arrow-right"></i>';
     }
 
     // Save form data
+    saveFormData();
   }
 
   function showInputError(element, message) {
@@ -186,10 +206,12 @@ document.addEventListener('DOMContentLoaded', () => {
       showInputError(parent, `Please write at least ${minWords} words.`);
       return false;
     }
+
     if (wordCount > maxWords) {
       showInputError(parent, `Please keep your response under ${maxWords} words.`);
       return false;
     }
+
     return true;
   }
 
@@ -204,6 +226,24 @@ document.addEventListener('DOMContentLoaded', () => {
       const parent = input.closest('.form-group') || input.parentElement;
       removeInputError(parent);
       input.classList.remove('error');
+
+      // 🚫 Track selection validation (Step 2 only)
+      if (step === 2) {
+        const checkedTracks = section.querySelectorAll(
+          'input[type="checkbox"].track-choices:checked'
+        );
+
+        if (checkedTracks.length === 0) {
+          isValid = false;
+
+          // Optional: show a nice error message
+          const errorContainer = section.querySelector(".step-error");
+          if (errorContainer) {
+            errorContainer.textContent = "Please select at least one track.";
+            errorContainer.style.display = "block";
+          }
+        }
+      }
 
       if (input.type === 'radio') {
         // For radio buttons
@@ -243,6 +283,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Initialize on page load (after loading saved data)
+  // We'll define loadSavedFormData() below, then call updateFormSteps().
+
   // Back button
   if (backBtn) {
     backBtn.addEventListener('click', () => {
@@ -267,6 +310,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     });
+  }
+
+  /**********************************************
+   * Auto-Save Progress to localStorage
+   **********************************************/
+  function saveFormData() {
+    const formData = {
+      currentStep,
+      fields: {}
+    };
+
+    // For each input/textarea, store its value by "id"
+    document.querySelectorAll('#membershipForm input, #membershipForm textarea').forEach((el) => {
+      if (el.type === 'radio') {
+        // only store the checked radio
+        if (el.checked) {
+          formData.fields[el.id] = true;
+        }
+      } else {
+        formData.fields[el.id] = el.value;
+      }
+    });
+
+    localStorage.setItem('csclubFormData', JSON.stringify(formData));
   }
 
   function loadSavedFormData() {
@@ -309,6 +376,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Load any saved data first
+  loadSavedFormData();
   // Then update steps
   updateFormSteps();
   // Then set up auto-save
@@ -317,12 +386,12 @@ document.addEventListener('DOMContentLoaded', () => {
   /**********************************************
    * Word Count Functionality
    **********************************************/
-  function updateWordCount(textarea) {
-    const wordCount = getWordCount(textarea.value);
+  function updateWordCount(textarea) {    
+    const wordCount = getWordCount(textarea.value);    
     const maxWords = parseInt(textarea.getAttribute('data-max-words') || '200', 10);
     const minWords = parseInt(textarea.getAttribute('data-min-words') || '0', 10);
     const countDisplay = textarea.nextElementSibling;
-
+    
     if (countDisplay) {
       countDisplay.textContent = `${wordCount}/${maxWords} words`;
       if (wordCount < minWords || wordCount > maxWords) {
@@ -344,29 +413,27 @@ document.addEventListener('DOMContentLoaded', () => {
    **********************************************/
   const expRadios = document.querySelectorAll('input[name="hasExperience"]');
   const expDetails = document.getElementById('experienceDetails');
-  if (expRadios && expDetails) {
-    expRadios.forEach(radio => {
-      radio.addEventListener('change', () => {
-        const textarea = expDetails.querySelector('textarea');
-        if (radio.value === 'yes') {
-          expDetails.style.display = 'block';
-          textarea.required = true;
-        } else {
-          expDetails.style.display = 'none';
-          textarea.required = false;
-          textarea.value = '';
-        }
-        saveFormData();
-      });
+  expRadios.forEach(radio => {
+    radio.addEventListener('change', () => {
+      const textarea = expDetails.querySelector('textarea');
+      if (radio.value === 'yes') {
+        expDetails.style.display = 'block';
+        textarea.required = true;
+      } else {
+        expDetails.style.display = 'none';
+        textarea.required = false;
+        textarea.value = '';
+      }
+      saveFormData();
     });
-  }
+  });
 
   /**********************************************
    * Countdown Timer
    **********************************************/
   function updateCountdown() {
     // Adjust your closing date here
-    const deadline = new Date('2025-02-10T23:59:59').getTime();
+    const deadline = new Date('2026-02-11T16:59:59').getTime();
     const now = new Date().getTime();
     const timeLeft = deadline - now;
 
@@ -400,19 +467,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const formMessage = document.createElement('div');
         formMessage.className = 'form-closed-message';
         formMessage.innerHTML = `
-          <div class="alert alert-warning" style="
-            background-color: #ff4444;
-            color: white;
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 8px;
-            text-align: center;
-            font-weight: bold;
-          ">
-            <i class="fas fa-clock"></i>
-            The application period has ended. Applications are no longer being accepted.
-          </div>
-        `;
+            <div class="alert alert-warning" style="
+              background-color: #ff4444;
+              color: white;
+              padding: 1rem;
+              margin: 1rem 0;
+              border-radius: 8px;
+              text-align: center;
+              font-weight: bold;
+            ">
+              <i class="fas fa-clock"></i>
+              The application period has ended. Applications are no longer being accepted.
+            </div>
+          `;
         form.insertBefore(formMessage, form.firstChild);
       }
 
@@ -420,11 +487,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const countdownSection = document.querySelector('.countdown-section');
       if (countdownSection) {
         countdownSection.innerHTML = `
-          <h3 style="color: #ff4444; text-align: center;">
-            <i class="fas fa-clock"></i>
-            Application period has ended
-          </h3>
-        `;
+            <h3 style="color: #ff4444; text-align: center;">
+              <i class="fas fa-clock"></i>
+              Application period has ended
+            </h3>
+          `;
       }
     }
   }
@@ -432,13 +499,35 @@ document.addEventListener('DOMContentLoaded', () => {
   const countdownInterval = setInterval(updateCountdown, 1000);
   updateCountdown();
 
+    /**********************************************
+   * Limiting Track Selection
+   **********************************************/
+  // Limit to maximum 3 selections
+  const MAX_SELECTIONS = 5;
+  const checkboxes = document.querySelectorAll('.track-choices');
+
+  checkboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', function() {
+          const checkedCount = document.querySelectorAll('.track-choices:checked').length;
+          
+          if (checkedCount > MAX_SELECTIONS) {
+              alert(`You can only select up to ${MAX_SELECTIONS} options`);
+              this.checked = false; // Uncheck the current one
+          }
+      });
+  });
+  const selectedTracks = [...document.querySelectorAll(
+    'input[type="checkbox"]:checked'
+  )].map(cb => cb.value);
+
+
   /**********************************************
    * Firebase Auth & Loading User Data
    **********************************************/
   firebase.auth().onAuthStateChanged((user) => {
     if (!user) {
       console.warn('User not signed in.');
-      // Optionally redirect:
+      // Optionally redirect
       // window.location.href = 'auth.html';
     } else {
       // If authenticated, load user data
@@ -446,21 +535,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-    async function loadUserData(userId) {
-      try {
-        const userDoc = await firebase.firestore().collection('applications').doc(userId).get();
-        if (userDoc.exists) {
-          const userData = userDoc.data();
-          const userNameSpan = document.getElementById('userName');
-          const congrats = document.querySelector('#congrats-text');
-          userNameSpan.textContent = userData.personalInformation.fullName;
-          congrats.innerHTML = userData.feedback;
-          console.log(userData);
+  async function loadUserData(userId) {
+    
+    try {
+      const userDoc = await firebase.firestore().collection('users').doc(userId).get();
+      if (userDoc.exists) {
+        const userData = userDoc.data();
+        const fullNameInput = document.getElementById('fullName');
+        const emailInput = document.getElementById('email');
+        const whatsappInput = document.getElementById('whatsapp');
+        if (fullNameInput && userData.fullName) {
+          fullNameInput.value = userData.fullName;
         }
-      } catch (error) {
-        console.error('Error loading user data:', error);
+        if (emailInput && userData.email) {
+          emailInput.value = userData.email;
+        }
+        if (whatsappInput && userData.whatsapp) {
+          whatsappInput.value = userData.whatsapp;
+        }
+        saveFormData(); // after autopopulating
       }
+    } catch (error) {
+      console.error('Error loading user data:', error);
     }
+  }
 
   const signOutButton = document.getElementById('signOut');
   if (signOutButton) {
@@ -469,7 +567,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Clear any stored form data
         localStorage.removeItem('csclubFormData');
         await firebase.auth().signOut();
-        window.location.href = './';
+        window.location.href = './auth.html';
       } catch (error) {
         console.error('Error signing out:', error);
       }
@@ -480,73 +578,79 @@ document.addEventListener('DOMContentLoaded', () => {
    * Form Submission Handler
    **********************************************/
   const membershipForm = document.getElementById('membershipForm');
-  if (membershipForm) {
-    membershipForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      try {
-        const user = firebase.auth().currentUser;
-        if (!user) {
-          alert('Please sign in to submit your application.');
-          return;
-        }
-
-        // Gather form data
-        const formData = {
-          personalInformation: {
-            fullName: document.getElementById('fullName').value.trim(),
-            whatsapp: document.getElementById('whatsapp').value.trim(),
-            email: document.getElementById('email').value.trim()
-          },
-          essays: {
-            techEssay: document.getElementById('techEssay').value.trim(),
-            goalEssay: document.getElementById('goalEssay').value.trim()
-          },
-          research: {
-            machineLearning: document.getElementById('mlResearch').value.trim(),
-          },
-          experience: {
-            hasExperience:
-              document.querySelector('input[name="hasExperience"]:checked')?.value || '',
-            experienceDetails: document.getElementById('experience').value.trim(),
-            additional: document.getElementById('additional').value.trim()
-          },
-          metadata: {
-            userId: user.uid,
-            submittedAt: firebase.firestore.FieldValue.serverTimestamp(),
-            status: 'pending'
-          }
-        };
-
-        // Save to Firestore
-        const db = firebase.firestore();
-        await db.collection('applications')
-          .doc(sessionStorage.getItem("email", user.email))
-          .set(formData);
-
-        // Show success modal
-        const successModal = document.getElementById('successModal');
-        if (successModal) {
-          successModal.classList.add('active');
-          // Animate loading bar
-          const loadingBar = document.getElementById('loadingBar');
-          if (loadingBar) {
-            setTimeout(() => {
-              loadingBar.style.width = '100%';
-            }, 100);
-          }
-        }
-
-        // Clear localStorage since submission is done
-        localStorage.removeItem('csclubFormData');
-
-        // Optionally reset form
-        membershipForm.reset();
-      } catch (error) {
-        console.error('Error submitting application:', error);
-        alert('An error occurred while submitting. Please try again.');
+  membershipForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const selectedTracks = [...document.querySelectorAll(
+      'input[type="checkbox"]:checked'
+    )].map(cb => cb.value);
+    try {
+      const user = firebase.auth().currentUser;
+      if (!user) {
+        alert('Please sign in to submit your application.');
+        return;
       }
-    });
-  }
+      const research = {};
+      document.querySelectorAll('.mlResearch').forEach(textarea => {
+        const trackKey = textarea.dataset.track;
+        if (selectedTracks.includes(trackKey)) {
+          research[trackKey] = textarea.value.trim();
+        }
+      });
+      // Gather form data
+      const formData = {
+        personalInformation: {
+          fullName: document.getElementById('fullName').value.trim(),
+          whatsapp: document.getElementById('whatsapp').value.trim(),
+          email: document.getElementById('email').value.trim()
+        },
+        essays: {
+          techEssay: document.getElementById('techEssay').value.trim(),
+          goalEssay: document.getElementById('goalEssay').value.trim()
+        },
+        tracks: selectedTracks,
+        research,
+        experience: {
+          hasExperience:
+            document.querySelector('input[name="hasExperience"]:checked')?.value || '',
+          experienceDetails: document.getElementById('experience').value.trim(),
+          additional: document.getElementById('additional').value.trim()
+        },
+        metadata: {
+          userId: user.uid,
+          submittedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          status: 'pending'
+        }
+      };
+
+      // Save to Firestore
+      const db = firebase.firestore();
+      console.log(formData.personalInformation.email);
+      
+      await db.collection('applications').doc(sessionStorage.getItem("email",user.email)).set(formData);
+
+      // Show success modal
+      const successModal = document.getElementById('successModal');
+      if (successModal) {
+        successModal.classList.add('active');
+        // Animate loading bar
+        const loadingBar = document.getElementById('loadingBar');
+        if (loadingBar) {
+          setTimeout(() => {
+            loadingBar.style.width = '100%';
+          }, 100);
+        }
+      }
+
+      // Clear localStorage since submission is done
+      localStorage.removeItem('csclubFormData');
+
+      // Optionally reset form
+      membershipForm.reset();
+    } catch (error) {
+      console.error('Error submitting application:', error);
+      alert('An error occurred while submitting. Please try again.');
+    }
+  });
 
   /**********************************************
    * Close Modal
@@ -555,69 +659,68 @@ document.addEventListener('DOMContentLoaded', () => {
     const successModal = document.getElementById('successModal');
     if (successModal) {
       successModal.classList.remove('active');
-      localStorage.setItem('submitted', true);
-      document.getElementById("application").innerHTML = `
-        <section id="apply" class="application-form">
-          <h1>Your application was already submitted, no decision update yet</h1>
-        </section>
-      `;
+      localStorage.setItem('submitted', true)
+      document.getElementById("application").innerHTML = `<section id="apply" class="application-form">
+<h1>Your application was already submitted, no decision update yet</h1></section>`
     }
+    // Optionally redirect:
+    // window.location.href = 'index.html';
   };
 
   /**********************************************
    * Matrix Background Animation
    **********************************************/
-  const canvas = document.getElementById('matrixCanvas');
-  const ctx = canvas.getContext('2d');
+  // const canvas = document.getElementById('matrixCanvas');
+  // const ctx = canvas.getContext('2d');
 
-  function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
+  // function resizeCanvas() {
+  //   canvas.width = window.innerWidth;
+  //   canvas.height = window.innerHeight;
+  // }
 
-  function initMatrix() {
-    resizeCanvas();
+  // function initMatrix() {
+  //   resizeCanvas();
 
-    const fontSize = 14;
-    const columns = Math.floor(canvas.width / fontSize);
-    const drops = new Array(columns).fill(1);
+  //   const fontSize = 14;
+  //   const columns = Math.floor(canvas.width / fontSize);
+  //   const drops = new Array(columns).fill(1);
 
-    ctx.font = fontSize + 'px monospace';
+  //   ctx.font = fontSize + 'px monospace';
 
-    function draw() {
-      ctx.fillStyle = 'rgba(0, 24, 48, 0.05)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+  //   function draw() {
+  //     ctx.fillStyle = 'rgba(0, 24, 48, 0.05)';
+  //     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.fillStyle = '#0fa';
+  //     ctx.fillStyle = '#0fa';
 
-      for (let i = 0; i < drops.length; i++) {
-        const text = String.fromCharCode(0x30A0 + Math.random() * 96);
-        const x = i * fontSize;
-        const y = drops[i] * fontSize;
+  //     for (let i = 0; i < drops.length; i++) {
+  //       const text = String.fromCharCode(0x30A0 + Math.random() * 96);
+  //       const x = i * fontSize;
+  //       const y = drops[i] * fontSize;
 
-        ctx.fillText(text, x, y);
+  //       ctx.fillText(text, x, y);
 
-        if (y > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-        drops[i]++;
-      }
-    }
+  //       if (y > canvas.height && Math.random() > 0.975) {
+  //         drops[i] = 0;
+  //       }
+  //       drops[i]++;
+  //     }
+  //   }
 
-    let animationFrame;
-    function animate() {
-      draw();
-      animationFrame = requestAnimationFrame(animate);
-    }
-    animate();
+  //   let animationFrame;
+  //   function animate() {
+  //     draw();
+  //     animationFrame = requestAnimationFrame(animate);
+  //   }
+  //   animate();
 
-    // Cleanup if needed
-    return () => {
-      if (animationFrame) {
-        cancelAnimationFrame(animationFrame);
-      }
-    };
-  }
+  //   // Cleanup if needed
+  //   return () => {
+  //     if (animationFrame) {
+  //       cancelAnimationFrame(animationFrame);
+  //     }
+  //   };
+  // }
 
   window.addEventListener('resize', resizeCanvas);
   initMatrix();

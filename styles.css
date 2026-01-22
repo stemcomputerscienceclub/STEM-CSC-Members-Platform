@@ -5,9 +5,8 @@
   --primary-color: #001B3D;
   --secondary-color: #002B5C;
   --accent-color: #00A3FF;
-  --accent-darker: #0088cc;
-  /* Add a darker accent for hover states */
-  --background-color: #00142e14;
+  --accent-darker: #0088cc; /* Add a darker accent for hover states */
+  --background-color: #00142E;
   --text-light: #FFFFFF;
   --text-dim: rgba(255, 255, 255, 0.7);
   --error-color: #ff4444;
@@ -29,8 +28,7 @@
   transform: translateZ(0);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  scrollbar-width: thin;
-  /* for Firefox */
+  scrollbar-width: thin; /* for Firefox */
   scrollbar-color: var(--accent-color) rgba(255, 255, 255, 0.1);
 }
 
@@ -82,7 +80,6 @@ header {
 
 nav {
   display: flex;
-  width: 100%;
   justify-content: space-between;
   align-items: center;
   max-width: 1200px;
@@ -292,8 +289,7 @@ nav {
 
 /* Main Content */
 main {
-  padding-top: 190px;
-  /* Account for fixed header + tabs */
+  padding-top: 190px; /* Account for fixed header + tabs */
   min-height: calc(100vh - 120px);
   background: var(--background-color);
 }
@@ -322,7 +318,7 @@ main {
 }
 
 /* =========================
-   announcement Section
+   Instructions Section
 ========================= */
 .section-header {
   text-align: center;
@@ -335,7 +331,7 @@ main {
   margin-bottom: 1rem;
 }
 
-.announcement-text {
+.instructions-text {
   color: var(--text-light);
   line-height: 1.8;
   margin-bottom: 3rem;
@@ -345,7 +341,7 @@ main {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.announcement-details h3 {
+.instructions-details h3 {
   color: var(--accent-color);
   font-size: 1.5rem;
   margin-bottom: 2rem;
@@ -396,9 +392,11 @@ main {
   max-width: 900px;
   margin: 2rem auto;
   padding: 2rem;
-  background: linear-gradient(145deg,
-      rgba(0, 24, 48, 0.8),
-      rgba(0, 36, 72, 0.9));
+  background: linear-gradient(
+    145deg,
+    rgba(0, 24, 48, 0.8),
+    rgba(0, 36, 72, 0.9)
+  );
   border-radius: 20px;
   border: 1px solid rgba(0, 163, 255, 0.1);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
@@ -592,8 +590,8 @@ main {
   transition: all 0.2s ease;
 }
 
-.floating-input-group textarea:focus~label,
-.floating-input-group textarea:not(:placeholder-shown)~label {
+.floating-input-group textarea:focus ~ label,
+.floating-input-group textarea:not(:placeholder-shown) ~ label {
   top: -0.6rem;
   left: 0.8rem;
   font-size: 0.85rem;
@@ -609,6 +607,20 @@ main {
   right: 0;
   font-size: 0.85rem;
   color: var(--text-dim);
+}
+.tracks-container{
+ display: flex; 
+ flex-direction: column;
+ gap: 10px;
+}
+.choice{
+  display: flex;
+  align-items: center; /* Align at the start */
+  padding-right: 20px;
+  border: #0088cc solid 1px;
+}
+.choice span{
+  white-space: nowrap;
 }
 
 /* Responsive Styles */
@@ -691,7 +703,7 @@ main {
   display: none;
 }
 
-.radio-group input[type="radio"]:checked+label {
+.radio-group input[type="radio"]:checked + label {
   background: rgba(0, 163, 255, 0.2);
   border-color: var(--accent-color);
   color: var(--accent-color);
@@ -865,8 +877,8 @@ main {
   transition: all 0.3s ease;
 }
 
-.floating-input-group input:focus~label,
-.floating-input-group input:not(:placeholder-shown)~label {
+.floating-input-group input:focus ~ label,
+.floating-input-group input:not(:placeholder-shown) ~ label {
   top: -0.5rem;
   left: 0.8rem;
   font-size: 0.85rem;
@@ -899,7 +911,7 @@ main {
   background-color: rgba(255, 68, 68, 0.05);
 }
 
-.floating-input-group input.error~label {
+.floating-input-group input.error ~ label {
   color: var(--error-color);
 }
 
@@ -983,10 +995,12 @@ main {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg,
-      transparent,
-      rgba(255, 255, 255, 0.2),
-      transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
   animation: loading 1.5s infinite;
 }
 
@@ -1023,11 +1037,9 @@ footer {
   0% {
     transform: scale(1);
   }
-
   50% {
     transform: scale(1.05);
   }
-
   100% {
     transform: scale(1);
   }
@@ -1043,7 +1055,6 @@ footer {
   0% {
     transform: translateX(-100%);
   }
-
   100% {
     transform: translateX(100%);
   }
@@ -1142,11 +1153,9 @@ footer {
     opacity: 0;
     transform: translateX(10px);
   }
-
   50% {
     opacity: 0.5;
   }
-
   100% {
     opacity: 1;
     transform: translateX(0);
@@ -1175,8 +1184,7 @@ footer {
   input[type="number"],
   select,
   textarea {
-    font-size: 16px;
-    /* Prevents zoom on mobile */
+    font-size: 16px; /* Prevents zoom on mobile */
     padding: 0.8rem;
     margin-bottom: 0.8rem;
   }
@@ -1252,7 +1260,6 @@ textarea:focus {
     opacity: 0;
     transform: translateY(-10px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
@@ -1295,4 +1302,11 @@ textarea:focus {
   .floating-input-group {
     margin-top: 1.5rem;
   }
+}
+.track-question {
+  display: none;
+}
+
+.track-question.active {
+  display: block;
 }

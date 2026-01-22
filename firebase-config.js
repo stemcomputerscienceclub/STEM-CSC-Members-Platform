@@ -4,16 +4,17 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth
 import { getFirestore } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-analytics.js";
 
-// Your web app's Firebase configuration
+  // Your web app's Firebase configuration
+
 const firebaseConfig = {
-  apiKey: "AIzaSyADstvloS_gv1V09WrsiBIpqXVC1iDnq4I",
-  authDomain: "form-cs.firebaseapp.com",
-  projectId: "form-cs",
-  storageBucket: "form-cs.firebasestorage.app",
-  messagingSenderId: "846877894058",
-  appId: "1:846877894058:web:ed3e1e2f5245214fea37d3",
-  measurementId: "G-RQ8F3FR7LB"
+  apiKey: "AIzaSyAASMdxsb__WKXJYtNu2A-CFLADqCwRGo4",
+  authDomain: "stem-csc-members.firebaseapp.com",
+  projectId: "stem-csc-members",
+  storageBucket: "stem-csc-members.firebasestorage.app",
+  messagingSenderId: "523867315988",
+  appId: "1:523867315988:web:ced7474cd7f4f4e2d4ec01"
 };
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
