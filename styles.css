@@ -379,7 +379,7 @@ main {
 
 .details-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(3, minmax(250px, 1fr));
   gap: 2rem;
 }
 
@@ -411,6 +411,7 @@ main {
 
 .detail-item p {
   color: var(--text-dim);
+  text-align: justify;
   line-height: 1.6;
 }
 
@@ -821,6 +822,15 @@ border: 1px solid rgba(118, 84, 206, 0.25);
   right: 0;
   top: 1.5rem;
   z-index: 1;
+}
+
+.cp {
+  display: block;          
+  margin: 1rem auto;      
+  max-width: 50%;        
+  width: 320px;            
+  border-radius: 16px;    
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25); 
 }
 
 .prev-btn,
