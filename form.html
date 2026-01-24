@@ -15,26 +15,35 @@
 </head>
 
 <body>
+  <div class="page-wrapper">
   <!-- Matrix Canvas Background -->
   <canvas id="matrixCanvas" class="matrix-bg"></canvas>
 
   <!-- Header -->
   <header>
     <nav>
-      <div class="logo"><img src="https://www.stemcsclub.org/imgs/official-logo.png" alt=""></div>
+      <div class="logo">
+        <img src="https://www.stemcsclub.org/imgs/official-logo.png"
+            alt="STEM CS Club"
+            class="logo-img primary-logo">
+
+        <img src="assets/hacklogo.svg"
+            alt="Hack Logo"
+            class="logo-img secondary-logo">
+      </div>
       <!-- Optional sign-out button -->
-      <button id="signOut" class="cta-button">Sign Out</button>
+      <button id="signOut" class="cta-button accent-glow">Sign Out</button>
     </nav>
   </header>
 
   <!-- Main Content -->
   <main>
-    <div class="page-tabs">
+    <div class="page-tabs accent-glow">
       <a href="#instructions" class="tab-link" data-tab="instructions">
         <i class="fas fa-book"></i>
         Instructions
       </a>
-      <a href="#application" class="tab-link active" data-tab="application">
+      <a href="#application" class="tab-link active accent-glow" data-tab="application">
         <i class="fas fa-edit"></i>
         Application
       </a>
@@ -45,11 +54,11 @@
       <div id="instructions" class="tab-content">
         <div class="content-container">
           <div class="section-header">
-            <h2>Join STEM Computer Science Club!</h2>
+            <h2>Join STEM Computer Science Club & Hack Club STEM Egypt!</h2>
           </div>
           <div class="instructions-text">
             <p>
-              Welcome to STEM Computer Science Club! We're excited that you're interested
+              Welcome to STEM Computer Science Club & Hack Club STEM Egypt! We're excited that you're interested
               in joining our community of passionate programmers, developers, and tech
               enthusiasts. Our club is dedicated to exploring various aspects of computer
               science, from web development to artificial intelligence.
@@ -177,7 +186,7 @@
           <section id="apply" class="application-form">
             <form id="membershipForm" class="form-container" novalidate>
               <!-- Back Button -->
-              <button type="button" class="back-btn" style="opacity: 0; pointer-events: none;">
+              <button type="button" class="back-btn accent-glow" style="opacity: 0; pointer-events: none;">
                 <i class="fas fa-arrow-left"></i>
               </button>
               <h2>
@@ -189,22 +198,22 @@
               <!-- Step Progress Indicators -->
               <div class="form-steps">
                 <div class="step active" data-step="1">
-                  <div class="step-number">1</div>
+                  <div class="step-number accent-glow">1</div>
                   <div class="step-title">Personal Info</div>
                 </div>
                 <div class="step-connector"></div>
                 <div class="step" data-step="2">
-                  <div class="step-number">2</div>
+                  <div class="step-number accent-glow">2</div>
                   <div class="step-title">Personal Reflection</div>
                 </div>
                 <div class="step-connector"></div>
                 <div class="step" data-step="3">
-                  <div class="step-number">3</div>
+                  <div class="step-number accent-glow">3</div>
                   <div class="step-title">Research Topics</div>
                 </div>
                 <div class="step-connector"></div>
                 <div class="step" data-step="4">
-                  <div class="step-number">4</div>
+                  <div class="step-number accent-glow">4</div>
                   <div class="step-title">Experience</div>
                 </div>
               </div>
@@ -385,7 +394,7 @@
                   <i class="fas fa-arrow-left"></i>
                 </button> -->
 
-                <button type="button" class="next-btn">
+                <button type="button" class="next-btn accent-glow">
                   Next <i class="fas fa-arrow-right"></i>
                 </button>
         </div>
@@ -406,7 +415,7 @@
 
   <!-- Footer -->
   <footer>
-    <p>2025 STEM Computer Science Club. All rights reserved.</p>
+    <p>2026 STEM Computer Science Club. All rights reserved.</p>
   </footer>
 
   <!-- Success Modal -->
@@ -414,9 +423,9 @@
     <div class="modal-content">
       <i class="fas fa-check-circle"></i>
       <h2>Application Submitted!</h2>
-      <p>Thank you for applying to STEM CSC 2025! We will reach out to you soon.</p>
+      <p>Thank you for applying to STEM CSC & HCSE 2026! We will reach out to you soon.</p>
       <div class="loading-bar" id="loadingBar"></div>
-      <button onclick="closeModal()">Close</button>
+      <button onclick="closeModal()" class="accent-glow">Close</button>
     </div>
   </div>
 
@@ -427,6 +436,7 @@
 
   <!-- Your external JS -->
   <script src="form.js"></script>
+  </div>
 </body>
 
 </html>

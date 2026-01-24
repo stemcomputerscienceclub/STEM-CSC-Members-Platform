@@ -93,6 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
     switchTab('application'); // Default if no hash
   }
 
+  
   /**********************************************
    * Multi-Step Form Navigation
    **********************************************/
@@ -505,6 +506,7 @@ document.addEventListener("change", (e) => {
   // Limit to maximum 3 selections
   const MAX_SELECTIONS = 5;
   const checkboxes = document.querySelectorAll('.track-choices');
+  
 
   checkboxes.forEach(checkbox => {
       checkbox.addEventListener('change', function() {
@@ -655,6 +657,7 @@ document.addEventListener("change", (e) => {
   /**********************************************
    * Close Modal
    **********************************************/
+  
   window.closeModal = function () {
     const successModal = document.getElementById('successModal');
     if (successModal) {
