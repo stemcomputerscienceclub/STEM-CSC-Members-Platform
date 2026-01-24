@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STEM CSC - Authentication</title>
+    <title>STEM CSC & HCSE - Authentication</title>
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
@@ -20,7 +20,10 @@
         <div class="auth-box">
             <!-- Logo and Header -->
             <div class="auth-header">
-                    <div class="logo"><img src="https://www.stemcsclub.org/imgs/official-logo.png" alt=""></div>
+                <div class="logo">
+                    <img src="https://www.stemcsclub.org/imgs/official-logo.png" alt="STEM CS Club">
+                    <img src="assets/image.png" alt="Second Logo" class="secondary-logo">
+                </div>
 
                 <!-- <h1>Welcome to STEM Computer Science Club</h1> -->
                 <!-- <p class="subtitle">Join our community of tech enthusiasts</p> -->
@@ -67,7 +70,7 @@
                     </button>
 
                     <p class="switch-form">
-                        New to STEM CSC? 
+                        New to STEM CSC & HCSE? 
                         <a href="#" data-switch="signup">Create an Account</a>
                     </p>
                 </form>
@@ -75,7 +78,7 @@
                 <!-- Sign Up Form -->
                 <form id="signupForm" class="auth-form">
                     <h2>Create Account</h2>
-                    <p class="form-subtitle">Join STEM Computer Science Club</p>
+                    <p class="form-subtitle">Join STEM Computer Science Club & Hack Club </p>
                     <div class="input-group">
                         <div class="input-wrapper">
                             <input type="email" id="signupEmail" required placeholder=" ">
@@ -130,7 +133,7 @@
 
             <!-- Footer -->
             <div class="auth-footer">
-                <p>STEM Computer Science Club &copy; 2025</p>
+                <p>STEM Computer Science Club &copy; 2026</p>
                 <!-- <div class="footer-links">
                     <a href="#">About Us</a>
                     <a href="#">Contact</a>
@@ -146,15 +149,14 @@
  <script src="https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore-compat.js"></script>
  <script>
      // Your web app's Firebase configuration
-     const firebaseConfig = {
-         apiKey: "AIzaSyADstvloS_gv1V09WrsiBIpqXVC1iDnq4I",
-         authDomain: "form-cs.firebaseapp.com",
-         projectId: "form-cs",
-         storageBucket: "form-cs.firebasestorage.app",
-         messagingSenderId: "846877894058",
-         appId: "1:846877894058:web:ed3e1e2f5245214fea37d3",
-         measurementId: "G-RQ8F3FR7LB"
-     };
+    const firebaseConfig = {
+    apiKey: "AIzaSyAASMdxsb__WKXJYtNu2A-CFLADqCwRGo4",
+    authDomain: "stem-csc-members.firebaseapp.com",
+    projectId: "stem-csc-members",
+    storageBucket: "stem-csc-members.firebasestorage.app",
+    messagingSenderId: "523867315988",
+    appId: "1:523867315988:web:ced7474cd7f4f4e2d4ec01"
+    };
 
      // Initialize Firebase
      firebase.initializeApp(firebaseConfig);
