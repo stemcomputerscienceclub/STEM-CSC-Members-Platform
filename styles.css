@@ -824,7 +824,7 @@ border: 1px solid rgba(118, 84, 206, 0.25);
   z-index: 1;
 }
 
-.cp {
+.track-img {
   display: block;          
   margin: 1rem auto;      
   max-width: 50%;        
