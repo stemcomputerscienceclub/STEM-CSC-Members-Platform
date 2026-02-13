@@ -93,7 +93,7 @@ header {
   width: 100%;
   top: 0;
   z-index: 1000;
-  border-bottom: 1px solid var(--accent-color);
+  border-bottom: 2px solid rgb(49, 29, 101);
   box-shadow: 0 2px 20px rgba(118, 84, 206, 0.2);
 }
 
@@ -102,6 +102,7 @@ nav {
   justify-content: space-between;
   align-items: center;
   max-width: 1200px;
+  width: 1200px;
   margin: 0 auto;
 }
 
@@ -138,8 +139,8 @@ nav {
   font-size: 1rem;
   font-weight: 600;
   color: var(--text-light);
-  background: transparent;
-  border: 1px solid var(--accent-color);
+  background: rgb(0, 0, 0);
+  border: 2px solid var(--accent-color);
   border-radius: 50px;
   transition: all 0.3s ease;
   cursor: pointer;
@@ -230,7 +231,6 @@ nav {
   stroke-width: 3;
   stroke-linecap: round;
 }
-
 .countdown-ring circle:nth-child(1) {
   stroke: rgba(255, 255, 255, 0.1);
 }
@@ -260,11 +260,11 @@ nav {
   padding: 0.75rem;
   background: var(--primary-color);
   position: fixed;
-  top: 120px;
+  top: 68.5px;
   left: 0;
   right: 0;
   z-index: 1000;
-  border-bottom: 2px solid var(--accent-color);
+  border-bottom: 2px solid rgb(49, 29, 101);
 }
 
 .tab-link {
@@ -314,7 +314,7 @@ nav {
 /* Main Content */
 main {
   padding-top: 190px; /* Account for fixed header + tabs */
-  min-height: calc(100vh - 120px);
+  min-height: calc(100vh - 60px);
   background: linear-gradient(
     180deg,
     #100024 0%,
@@ -1132,7 +1132,6 @@ border: 1px solid rgba(118, 84, 206, 0.25);
 footer {
   text-align: center;
   padding: 2rem 1rem;
-  margin-top: 3rem;
   color: var(--text-light);
   border-top: 1px solid rgba(118, 84, 206, 0.25);
   background: rgba(16, 0, 36, 0.6);
@@ -1446,7 +1445,7 @@ body.modal-open {
   * HEADER
 ***************************************************/
 header {
-  background: #001B3D;
+  background: rgb(17, 2, 35);
   padding: 0.5rem 1rem;
   display: flex;
   justify-content: space-between;
@@ -1458,7 +1457,7 @@ header .logo img {
 }
 
 .cta-button {
-  background: #00A3FF;
+  background: var(--accent-color);
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -1486,7 +1485,8 @@ header .logo img {
   justify-content: center;
   gap: 1rem;
   padding: 0.75rem;
-  background: #001B3D;
+  color: var(--text-light);
+  background: rgb(17, 2, 35);
 }
 
 .tab-link {
@@ -1503,13 +1503,6 @@ header .logo img {
   gap: 0.5rem;
   font-size: 0.9rem;
 }
-
-.tab-link.active {
-  color: #fff;
-  background: #00A3FF;
-  border-color: #00A3FF;
-}
-
 /***************************************************
   * CONTENT WRAPPER
 ***************************************************/
@@ -1527,14 +1520,17 @@ header .logo img {
   background: rgba(255, 255, 255, 0.05);
   padding: 1rem;
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.1);
   text-align: center;
   max-width: 600px;
   margin: 2rem auto;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 #decisionSection h2 {
-  color: #00A3FF;
+  color: #6c63ff;
   margin-bottom: 0.5rem;
   font-size: 1.3rem;
 }
