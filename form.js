@@ -220,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return false;
     }
     return true;
-  }
+  })
 
 //   function validateStep(step) {
 //     let isValid = true;
@@ -744,6 +744,52 @@ const body = document.body;
 let currentDecisionStatus = null;
 let currentUserData = null;
 
+// View Decision button: terminal animation, then congrats modal
+if (viewDecisionBtn && congratsModal) {
+  viewDecisionBtn.addEventListener('click', async () => {
+    const user = firebase.auth().currentUser;
+    if (!user) return;
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const outputEl = document.getElementById('output');
+    const cursorEl = document.querySelector('.cursor');
+    if (!loadingOverlay || !outputEl) return;
+
+    let userData = null;
+    try {
+      const userDoc = await firebase.firestore().collection('applications').doc(user.email).get();
+      if (!userDoc.exists) return;
+      userData = userDoc.data();
+    } catch (e) { console.error('Error loading decision:', e); return; }
+
+    // Show loading overlay and clear terminal
+    loadingOverlay.classList.add('active');
+    outputEl.innerHTML = '';
+    var voiceEl = document.getElementById('decisionMusic');
+    if (voiceEl) { voiceEl.currentTime = 0; voiceEl.play().catch(function () {}); }
+
+    var terminalCommands = [
+      { text: '$ ./check_decision.sh\n', delay: 1500 },
+      { text: 'Connecting to STEM CS Club...\n', delay: 1500 },
+      { text: 'Fetching application status...\n', delay: 1500 },
+      { text: 'Processing your decision', type: 'info', delay: 1500 },
+      { text: '...\n', delay: 1500 },
+      { text: 'Decision ready!\n', type: 'success', delay: 1500 }
+    ];
+
+    var sim = new TerminalSimulator(outputEl, cursorEl, terminalCommands, function () {
+      loadingOverlay.classList.remove('active');
+      const userNameSpan = document.getElementById('userName');
+      const congrats = document.querySelector('#congrats-text');
+      if (userNameSpan) userNameSpan.textContent = (userData.personalInformation && userData.personalInformation.fullName) || 'Applicant';
+      if (congrats) congrats.innerHTML = userData.feedback || '';
+      congratsModal.classList.add('active');
+    });
+    sim.runSimulation();
+  });
+}
+if (closeCongratsBtn && congratsModal) {
+  closeCongratsBtn.addEventListener('click', () => congratsModal.classList.remove('active'));
+}
 
 class TerminalSimulator {
 constructor(outputElement, cursorElement, commands, callbackEnd) {
@@ -791,27 +837,8 @@ async runSimulation() {
 
 function handleTrackGroups(userTracks) {
   const cscBtns = document.getElementById("CSC-btns");
-  const hcBtns = document.getElementById("HC-btns");
-
-  // Make sure it's always an array
-  if (!Array.isArray(userTracks)) {
-  userTracks = [userTracks];
-  }
-
-  const appliedToCSC = userTracks.some(track => cscTracks.includes(track));
-  const appliedToHC = userTracks.some(track => hcTracks.includes(track));
-
-  if (appliedToCSC) {
+  if (!cscBtns) return;
   cscBtns.style.display = "flex";
-  } else {
-  cscBtns.style.display = "none";
-  }
-
-  if (appliedToHC) {
-  hcBtns.style.display = "flex";
-  } else {
-  hcBtns.style.display = "none";
-  }
 }
 firebase.auth().onAuthStateChanged(async (user) => {
   if (!user) {
