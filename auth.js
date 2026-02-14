@@ -213,6 +213,7 @@ signupForm.addEventListener('submit', async (e) => {
     } catch (error) {
         console.error('Sign up error:', error);
         let errorMessage = 'An error occurred during sign up.';
+
         switch (error.code) {
             case 'auth/email-already-in-use':
                 errorMessage = 'An account already exists with this email address.';
@@ -237,8 +238,16 @@ signupForm.addEventListener('submit', async (e) => {
 // Check if user is already signed in
 firebase.auth().onAuthStateChanged((user) => {
     if (user && localStorage.getItem("user")) {
-        window.location.href = './form.html#announcement';
-    } 
+        // If on auth page and logged in, redirect to form with instructions tab
+        if (window.location.href.includes('auth.html')) {
+            window.location.href = './form.html#instructions';
+        }
+    } else {
+        // If not on auth page and not logged in, redirect to auth
+        if (!window.location.href.includes('auth.html')) {
+            window.location.href = './auth.html';
+        }
+    }
 });
 
 // Check if user was remembered

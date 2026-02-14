@@ -13,52 +13,59 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 
-// // Add authentication check
-// firebase.auth().onAuthStateChanged(async (user) => {
-//   if (!user || localStorage.getItem("user") != user.uid) {
-//     // Redirect to auth page if not signed in
-//     window.location.href = 'auth.html';
-//     return;
-//   }
-//   if (localStorage.getItem("submitted")) {
-//     document.getElementById("application").innerHTML = `<section id="apply" class="application-form">
-//     <h1>Your application was already submitted, no decision update yet</h1></section>`
-//     return;
-//   }
-// sessionStorage.setItem("email",user.email);
-  
-//   // Save to Firestore
-//   try {
+// Add authentication check
+firebase.auth().onAuthStateChanged(async (user) => {
+  if (!user || localStorage.getItem("user") != user.uid) {
+    // Redirect to auth page if not signed in
+    window.location.href = './';
+    return;
+  }
 
-//     const db = firebase.firestore();
-//     const userDoc = await db.collection('applications').doc(user.email).get();
+  if (localStorage.getItem("submitted")) {
+    document.getElementById("application").innerHTML = `
+      <section id="apply" class="application-form">
+        <h1>Your application was already submitted, no decision update yet</h1>
+      </section>
+    `;
+    return;
+  }
 
-//     if (userDoc.exists) {
-//       document.getElementById("application").innerHTML = `<section id="apply" class="application-form">
-//       <h1>Your application was already submitted, no decision update yet</h1></section>`
-//       return;
-//     }
-//   }
-//   catch {
-//   }
-//   // if ()
-// });
+  sessionStorage.setItem("email", user.email);
 
-// document.addEventListener('DOMContentLoaded', () => {
-//   /**********************************************
-//    * Tab Switching
-//    **********************************************/
-//   const tabLinks = document.querySelectorAll('.tab-link');
-//   const tabContents = document.querySelectorAll('.tab-content');
+  // Save to Firestore
+  try {
+    const db = firebase.firestore();
+    const userDoc = await db.collection('applications').doc(user.email).get();
 
-//   function switchTab(tabId) {
-//     // Update active tab link
-//     tabLinks.forEach(link => {
-//       link.classList.remove('active');
-//       if (link.getAttribute('data-tab') === tabId) {
-//         link.classList.add('active');
-//       }
-//     });
+    if (!userDoc.exists) {
+      document.getElementById("application").innerHTML = `
+        <section id="apply" class="application-form">
+          <h1>Your application was already submitted, no decision update yet</h1>
+        </section>
+      `;
+      return;
+    }
+  } catch (err) {
+    console.error("Error checking application:", err);
+  }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  /**********************************************
+   * Tab Switching
+   **********************************************/
+  const tabLinks = document.querySelectorAll('.tab-link');
+  const tabContents = document.querySelectorAll('.tab-content');
+  console.log(tabLinks);
+
+  function switchTab(tabId) {
+    // Update active tab link
+    tabLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('data-tab') === tabId) {
+        link.classList.add('active');
+      }
+    });
 
 //     // Update active tab content
 //     tabContents.forEach(content => {
@@ -80,10 +87,12 @@ firebase.initializeApp(firebaseConfig);
 //     });
 //   });
 
-//   // Check URL hash on page load
-//   if (window.location.hash === '#instructions') {
-//     switchTab('instructions');
-//   }
+  // Check URL hash on page load
+  if (window.location.hash === '#announcement') {
+    console.log("fdfsdfds");
+
+    switchTab('announcement');
+  }
 
 //   // Handle initial hash on page load
 //   const initialHash = window.location.hash.substring(1);
@@ -162,17 +171,16 @@ firebase.initializeApp(firebaseConfig);
 //       backBtn.style.pointerEvents = isFirstStep ? 'none' : 'auto';
 //     }
 
-//     // Update next button
-//     if (nextBtn) {
-//       const isLastStep = currentStep === totalSteps;
-//       nextBtn.innerHTML = isLastStep ?
-//         '<i class="fas fa-paper-plane"></i> Submit' :
-//         'Next <i class="fas fa-arrow-right"></i>';
-//     }
+    // Update next button
+    if (nextBtn) {
+      const isLastStep = currentStep === totalSteps;
+      nextBtn.innerHTML = isLastStep
+        ? '<i class="fas fa-paper-plane"></i> Submit'
+        : 'Next <i class="fas fa-arrow-right"></i>';
+    }
 
-//     // Save form data
-//     saveFormData();
-//   }
+    // Save form data
+  }
 
 //   function showInputError(element, message) {
 //     let errorMsg = element.querySelector('.error-message');
@@ -203,18 +211,16 @@ firebase.initializeApp(firebaseConfig);
 
 //     removeInputError(parent);
 
-//     if (wordCount < minWords) {
-//       showInputError(parent, `Please write at least ${minWords} words.`);
-//       return false;
-//     }
-
-//     if (wordCount > maxWords) {
-//       showInputError(parent, `Please keep your response under ${maxWords} words.`);
-//       return false;
-//     }
-
-//     return true;
-//   }
+    if (wordCount < minWords) {
+      showInputError(parent, `Please write at least ${minWords} words.`);
+      return false;
+    }
+    if (wordCount > maxWords) {
+      showInputError(parent, `Please keep your response under ${maxWords} words.`);
+      return false;
+    }
+    return true;
+  }
 
 //   function validateStep(step) {
 //     let isValid = true;
@@ -813,175 +819,390 @@ firebase.auth().onAuthStateChanged(async (user) => {
   return;
   }
 
-  try {
-  const db = firebase.firestore();
-  const docRef = db.collection("applications").doc(user.email);
-  const docSnap = await docRef.get();
-
-  if (!docSnap.exists) {
-    console.log("No application found.");
-    return;
-  }
-  const data = docSnap.data();
-
-
-  handleTrackGroups(data.tracks);
-  currentUserData = docSnap.data();
-  currentDecisionStatus = currentUserData?.metadata?.status || "pending";
-
-  setupDecisionUI();
-
-  } catch (error) {
-  console.error("Error loading application:", error);
-  }
-});
-
-
-function setupDecisionUI() {
-
-  if (!currentDecisionStatus || currentDecisionStatus === "pending") {
-  decisionText.textContent = "Your application is still under review.";
-  viewDecisionBtn.disabled = true;
-  return;
+  // Handle form submission
+  function submitForm() {
+    const membershipForm = document.getElementById('membershipForm');
+    if (membershipForm) {
+      membershipForm.dispatchEvent(new Event('submit', { cancelable: true }));
+    }
   }
 
-  decisionText.textContent = "Your decision is ready!";
-  viewDecisionBtn.disabled = false;
-
-  // Inject name + feedback
-  const nameSpan = document.getElementById("userName");
-  const feedback = document.getElementById("congrats-text");
-
-  if (nameSpan) {
-  nameSpan.textContent =
-    currentUserData.personalInformation?.fullName || "Applicant";
+  // Back button
+  if (backBtn) {
+    backBtn.addEventListener('click', () => {
+      if (currentStep > 1) {
+        currentStep--;
+        updateFormSteps();
+        saveFormData();
+      }
+    });
   }
 
-  if (feedback) {
-  feedback.textContent =
-    currentUserData.feedback || "Welcome to STEM Computer Science Club.";
-  }
-  }
-
-
-viewDecisionBtn.addEventListener('click', () => {
-
-  if (!currentDecisionStatus || currentDecisionStatus === "pending") {
-  decisionText.textContent = "No decision yet. Please wait!";
-  return;
-  }
-
-  if (currentDecisionStatus === "rejected") {
-  decisionText.textContent =
-    "We regret to inform you that you were not selected this cycle.";
-  return;
+  // Next/Submit button
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      if (validateStep(currentStep)) {
+        if (currentStep < totalSteps) {
+          currentStep++;
+          updateFormSteps();
+          saveFormData();
+        } else {
+          submitForm();
+        }
+      }
+    });
   }
 
-  // If accepted → run animation
-  if (currentDecisionStatus === "accepted") {
-  launchAcceptedAnimation();
+  function loadSavedFormData() {
+    const saved = localStorage.getItem('csclubFormData');
+    if (!saved) return;
+
+    try {
+      const { currentStep: savedStep, fields } = JSON.parse(saved);
+
+      // Populate fields
+      Object.keys(fields).forEach((key) => {
+        const el = document.getElementById(key);
+        if (el) {
+          if (el.type === 'radio') {
+            // means it was checked
+            el.checked = true;
+          } else {
+            el.value = fields[key];
+          }
+        }
+      });
+
+      // restore step
+      if (savedStep && savedStep > 0 && savedStep <= totalSteps) {
+        currentStep = savedStep;
+      }
+    } catch (err) {
+      console.warn('Could not parse saved form data:', err);
+    }
   }
+
+  function setupAutoSaveListeners() {
+    const allInputs = document.querySelectorAll('#membershipForm input, #membershipForm textarea');
+    allInputs.forEach((el) => {
+      if (el.type === 'radio') {
+        el.addEventListener('change', saveFormData);
+      } else {
+        el.addEventListener('input', saveFormData);
+      }
+    });
+  }
+
+  // Then update steps
+  updateFormSteps();
+  // Then set up auto-save
+  setupAutoSaveListeners();
+
+  /**********************************************
+   * Word Count Functionality
+   **********************************************/
+  function updateWordCount(textarea) {
+    const wordCount = getWordCount(textarea.value);
+    const maxWords = parseInt(textarea.getAttribute('data-max-words') || '200', 10);
+    const minWords = parseInt(textarea.getAttribute('data-min-words') || '0', 10);
+    const countDisplay = textarea.nextElementSibling;
+
+    if (countDisplay) {
+      countDisplay.textContent = `${wordCount}/${maxWords} words`;
+      if (wordCount < minWords || wordCount > maxWords) {
+        countDisplay.style.color = '#ff4444';
+      } else {
+        countDisplay.style.color = '#4CAF50';
+      }
+    }
+  }
+
+  const textareas = document.querySelectorAll('textarea[data-min-words]');
+  textareas.forEach(textarea => {
+    updateWordCount(textarea);
+    textarea.addEventListener('input', () => updateWordCount(textarea));
   });
 
-
-function launchAcceptedAnimation() {
-
-  body.classList.add('modal-open');
-  document.getElementById('loadingOverlay').classList.add('active');
-
-  const music = document.getElementById('decisionMusic');
-  music.currentTime = 0;
-  music.play().catch(err => console.warn(err));
-
-  const outputElement = document.getElementById('output');
-  const cursorElement = document.querySelector('.cursor');
-  outputElement.innerHTML = '';
-
-  const commands = [
-  { text: '> Accessing applicant database...', speed: 60 },
-  { text: '> Verifying performance metrics...', delay: 700, speed: 70 },
-  { text: '> Evaluating technical potential...', delay: 500, speed: 50 },
-  { text: '> Decision found: ACCEPTED', type: 'success', delay: 1000, speed: 100 }
-  ];
-
-  const terminal = new TerminalSimulator(
-  outputElement,
-  cursorElement,
-  commands,
-  () => {
-    document.getElementById('loadingOverlay').classList.remove('active');
-    congratsModal.classList.add('active');
-    startConfetti();
+  /**********************************************
+   * Toggle Experience Details
+   **********************************************/
+  const expRadios = document.querySelectorAll('input[name="hasExperience"]');
+  const expDetails = document.getElementById('experienceDetails');
+  if (expRadios && expDetails) {
+    expRadios.forEach(radio => {
+      radio.addEventListener('change', () => {
+        const textarea = expDetails.querySelector('textarea');
+        if (radio.value === 'yes') {
+          expDetails.style.display = 'block';
+          textarea.required = true;
+        } else {
+          expDetails.style.display = 'none';
+          textarea.required = false;
+          textarea.value = '';
+        }
+        saveFormData();
+      });
+    });
   }
-);
 
-terminal.runSimulation();
-}
+  /**********************************************
+   * Countdown Timer
+   **********************************************/
+  function updateCountdown() {
+    // Adjust your closing date here
+    const deadline = new Date('2025-02-11T16:59:59').getTime();
+    const now = new Date().getTime();
+    const timeLeft = deadline - now;
 
+    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
+    const daysEl = document.getElementById('days');
+    const hoursEl = document.getElementById('hours');
+    const minutesEl = document.getElementById('minutes');
+    const secondsEl = document.getElementById('seconds');
 
-/**********************************************
- * Close the "Congrats" modal
- **********************************************/
-closeCongratsBtn.onclick = () => {
-  congratsModal.classList.remove('active');
-  body.classList.remove('modal-open');
-  stopConfetti();
-  // Optionally pause/stop the music
-  const music = document.getElementById('decisionMusic');
-  music.pause();
-};
+    if (daysEl) daysEl.textContent = String(days).padStart(2, '0');
+    if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
+    if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, '0');
+    if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, '0');
 
-// Close modal if the user clicks outside the .congrats-content
-window.addEventListener('click', (e) => {
-  if (e.target === congratsModal) {
-    congratsModal.classList.remove('active');
-    body.classList.remove('modal-open');
-    stopConfetti();
-    const music = document.getElementById('decisionMusic');
-    music.pause();
+    // If time is up
+    if (timeLeft < 0) {
+      clearInterval(countdownInterval);
+
+      // Disable form
+      const form = document.getElementById('membershipForm');
+      if (form) {
+        const formElements = form.querySelectorAll('input, textarea, button');
+        formElements.forEach(element => {
+          element.disabled = true;
+        });
+        // Show message at top
+        const formMessage = document.createElement('div');
+        formMessage.className = 'form-closed-message';
+        formMessage.innerHTML = `
+          <div class="alert alert-warning" style="
+            background-color: #ff4444;
+            color: white;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+          ">
+            <i class="fas fa-clock"></i>
+            The application period has ended. Applications are no longer being accepted.
+          </div>
+        `;
+        form.insertBefore(formMessage, form.firstChild);
+      }
+
+      // Update countdown section
+      const countdownSection = document.querySelector('.countdown-section');
+      if (countdownSection) {
+        countdownSection.innerHTML = `
+          <h3 style="color: #ff4444; text-align: center;">
+            <i class="fas fa-clock"></i>
+            Application period has ended
+          </h3>
+        `;
+      }
+    }
   }
+
+  const countdownInterval = setInterval(updateCountdown, 1000);
+  updateCountdown();
+
+  /**********************************************
+   * Firebase Auth & Loading User Data
+   **********************************************/
+  firebase.auth().onAuthStateChanged((user) => {
+    if (!user) {
+      console.warn('User not signed in.');
+      // Optionally redirect:
+      // window.location.href = 'auth.html';
+    } else {
+      // If authenticated, load user data
+      loadUserData(user.email);
+    }
+  });
+
+    async function loadUserData(userId) {
+      try {
+        const userDoc = await firebase.firestore().collection('applications').doc(userId).get();
+        if (userDoc.exists) {
+          const userData = userDoc.data();
+          const userNameSpan = document.getElementById('userName');
+          const congrats = document.querySelector('#congrats-text');
+          userNameSpan.textContent = userData.personalInformation.fullName;
+          congrats.innerHTML = userData.feedback;
+          console.log(userData);
+        }
+      } catch (error) {
+        console.error('Error loading user data:', error);
+      }
+    }
+
+  const signOutButton = document.getElementById('signOut');
+  if (signOutButton) {
+    signOutButton.addEventListener('click', async () => {
+      try {
+        // Clear any stored form data
+        localStorage.removeItem('csclubFormData');
+        await firebase.auth().signOut();
+        window.location.href = './';
+      } catch (error) {
+        console.error('Error signing out:', error);
+      }
+    });
+  }
+
+  /**********************************************
+   * Form Submission Handler
+   **********************************************/
+  const membershipForm = document.getElementById('membershipForm');
+  if (membershipForm) {
+    membershipForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      try {
+        const user = firebase.auth().currentUser;
+        if (!user) {
+          alert('Please sign in to submit your application.');
+          return;
+        }
+
+        // Gather form data
+        const formData = {
+          personalInformation: {
+            fullName: document.getElementById('fullName').value.trim(),
+            whatsapp: document.getElementById('whatsapp').value.trim(),
+            email: document.getElementById('email').value.trim()
+          },
+          essays: {
+            techEssay: document.getElementById('techEssay').value.trim(),
+            goalEssay: document.getElementById('goalEssay').value.trim()
+          },
+          research: {
+            machineLearning: document.getElementById('mlResearch').value.trim(),
+          },
+          experience: {
+            hasExperience:
+              document.querySelector('input[name="hasExperience"]:checked')?.value || '',
+            experienceDetails: document.getElementById('experience').value.trim(),
+            additional: document.getElementById('additional').value.trim()
+          },
+          metadata: {
+            userId: user.uid,
+            submittedAt: firebase.firestore.FieldValue.serverTimestamp(),
+            status: 'pending'
+          }
+        };
+
+        // Save to Firestore
+        const db = firebase.firestore();
+        await db.collection('applications')
+          .doc(sessionStorage.getItem("email", user.email))
+          .set(formData);
+
+        // Show success modal
+        const successModal = document.getElementById('successModal');
+        if (successModal) {
+          successModal.classList.add('active');
+          // Animate loading bar
+          const loadingBar = document.getElementById('loadingBar');
+          if (loadingBar) {
+            setTimeout(() => {
+              loadingBar.style.width = '100%';
+            }, 100);
+          }
+        }
+
+        // Clear localStorage since submission is done
+        localStorage.removeItem('csclubFormData');
+
+        // Optionally reset form
+        membershipForm.reset();
+      } catch (error) {
+        console.error('Error submitting application:', error);
+        alert('An error occurred while submitting. Please try again.');
+      }
+    });
+  }
+
+  /**********************************************
+   * Close Modal
+   **********************************************/
+  window.closeModal = function () {
+    const successModal = document.getElementById('successModal');
+    if (successModal) {
+      successModal.classList.remove('active');
+      localStorage.setItem('submitted', true);
+      document.getElementById("application").innerHTML = `
+        <section id="apply" class="application-form">
+          <h1>Your application was already submitted, no decision update yet</h1>
+        </section>
+      `;
+    }
+  };
+
+  /**********************************************
+   * Matrix Background Animation
+   **********************************************/
+  const canvas = document.getElementById('matrixCanvas');
+  const ctx = canvas.getContext('2d');
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function initMatrix() {
+    resizeCanvas();
+
+    const fontSize = 14;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops = new Array(columns).fill(1);
+
+    ctx.font = fontSize + 'px monospace';
+
+    function draw() {
+      ctx.fillStyle = 'rgba(0, 24, 48, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#0fa';
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = String.fromCharCode(0x30A0 + Math.random() * 96);
+        const x = i * fontSize;
+        const y = drops[i] * fontSize;
+
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+    }
+
+    let animationFrame;
+    function animate() {
+      draw();
+      animationFrame = requestAnimationFrame(animate);
+    }
+    animate();
+
+    // Cleanup if needed
+    return () => {
+      if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+      }
+    };
+  }
+
+  window.addEventListener('resize', resizeCanvas);
+  initMatrix();
 });
-
-
-// Close if clicking outside the modal content
-window.addEventListener('click', (e) => {
-  if (e.target === congratsModal) {
-    congratsModal.classList.remove('active');
-    body.classList.remove('modal-open');
-    stopConfetti();
-    const music = document.getElementById('decisionMusic');
-    music.pause();
-  }
-});
-
-const cscTracks = ["gen", "web", "ml", "quantem"];
-const hcTracks = ["cyber", "game", "cp"];
-
-function handleTrackGroups(userTracks) {
-const cscBtns = document.getElementById("CSC-btns");
-const hcBtns = document.getElementById("HC-btns");
-
-// Make sure it's always an array
-if (!Array.isArray(userTracks)) {
-userTracks = [userTracks];
-}
-
-const appliedToCSC = userTracks.some(track => cscTracks.includes(track));
-const appliedToHC = userTracks.some(track => hcTracks.includes(track));
-
-if (appliedToCSC) {
-cscBtns.style.display = "flex";
-} else {
-cscBtns.style.display = "none";
-}
-
-if (appliedToHC) {
-hcBtns.style.display = "flex";
-} else {
-hcBtns.style.display = "none";
-}
-}
-
-
-
