@@ -13,10 +13,15 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 
-// Add authentication check
+// Add authentication check — don't redirect when localStorage has "user" (Firebase may fire null before restoring)
 firebase.auth().onAuthStateChanged(async (user) => {
-  if (!user || localStorage.getItem("user") != user.uid) {
-    // Redirect to auth page if not signed in
+  var storedUid = localStorage.getItem("user");
+  if (!storedUid) {
+    window.location.href = './';
+    return;
+  }
+  if (!user) return; // wait for Firebase to restore session
+  if (storedUid !== user.uid) {
     window.location.href = './';
     return;
   }
@@ -841,10 +846,7 @@ function handleTrackGroups(userTracks) {
   cscBtns.style.display = "flex";
 }
 firebase.auth().onAuthStateChanged(async (user) => {
-  if (!user) {
-  window.location.href = 'auth.html';
-  return;
-  }
+  if (!user) return; // redirect handled at top of file
 
   // Handle form submission
   function submitForm() {
