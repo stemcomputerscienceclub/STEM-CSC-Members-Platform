@@ -9,13 +9,11 @@
   /* Add a darker accent for hover states */
   --background-color: #00142e14;
   --text-light: #FFFFFF;
-  --text-dim: rgba(255, 255, 255, 0.75);
-
-  --gradient-start: #03000B;
-  --gradient-end: #19003A;
-
-  --error-color: #ff4d6d;
-  --success-color: #22c55e;
+  --text-dim: rgba(255, 255, 255, 0.7);
+  --error-color: #ff4444;
+  --success-color: #00C851;
+  --gradient-start: #00142E;
+  --gradient-end: #002347;
 }
 
 
@@ -91,8 +89,8 @@ header {
   width: 100%;
   top: 0;
   z-index: 1000;
-  border-bottom: 2px solid rgb(49, 29, 101);
-  box-shadow: 0 2px 20px rgba(118, 84, 206, 0.2);
+  border-bottom: 1px solid var(--accent-color);
+  box-shadow: 0 2px 20px rgba(0, 163, 255, 0.15);
 }
 
 nav {
@@ -137,8 +135,8 @@ nav {
   font-size: 1rem;
   font-weight: 600;
   color: var(--text-light);
-  background: rgb(0, 0, 0);
-  border: 2px solid var(--accent-color);
+  background: transparent;
+  border: 1px solid var(--accent-color);
   border-radius: 50px;
   transition: all 0.3s ease;
   cursor: pointer;
@@ -258,11 +256,11 @@ nav {
   padding: 0.75rem;
   background: var(--primary-color);
   position: fixed;
-  top: 68.5px;
+  top: 69px;
   left: 0;
   right: 0;
   z-index: 1000;
-  border-bottom: 2px solid rgb(49, 29, 101);
+  border-bottom: 2px solid var(--accent-color);
 }
 
 .tab-link {
@@ -286,7 +284,7 @@ nav {
 
 .tab-link:hover {
   color: #fff;
-  background: rgba(118, 84, 206, 0.2);
+  background: rgba(0, 163, 255, 0.15);
 }
 
 .tab-link.active {
@@ -312,18 +310,15 @@ nav {
 /* Main Content */
 main {
   padding-top: 190px;
-  /* Account for fixed header + tabs */
   min-height: calc(100vh - 120px);
   background: var(--background-color);
 }
-
 .content-wrapper {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1rem;
 }
 
-/* Responsive Adjustments (Tabs) */
 @media (max-width: 768px) {
   .page-tabs {
     padding: 0.5rem;
@@ -354,7 +349,7 @@ main {
   margin-bottom: 1rem;
 }
 
-.instructions-text {
+.announcement-text {
   color: var(--text-light);
   line-height: 1.8;
   margin-bottom: 3rem;
@@ -372,7 +367,7 @@ main {
 
 .details-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 2rem;
 }
 
@@ -404,7 +399,6 @@ main {
 
 .detail-item p {
   color: var(--text-dim);
-  text-align: justify;
   line-height: 1.6;
 }
 
@@ -420,7 +414,7 @@ main {
       rgba(0, 24, 48, 0.8),
       rgba(0, 36, 72, 0.9));
   border-radius: 20px;
-  border: 1px solid rgba(118, 84, 206, 0.15);
+  border: 1px solid rgba(0, 163, 255, 0.1);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(10px);
   position: relative;
@@ -755,7 +749,7 @@ border: 1px solid rgba(118, 84, 206, 0.25);
 }
 
 .error {
-  border-color: var(--error-color) !important;
+  border-color: var(--error-color)
 }
 
 /* Radio/Checkbox Groups */
@@ -1124,8 +1118,11 @@ footer {
   text-align: center;
   padding: 2rem 1rem;
   color: var(--text-light);
-  border-top: 1px solid rgba(118, 84, 206, 0.25);
-  background: rgba(16, 0, 36, 0.6);
+  border-top: 1px solid var(--accent-color);
+  background: #05152ae2;
+  bottom: 0px;
+  position: absolute;
+  width: 100%;
 }
 
 /* =========================
