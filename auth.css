@@ -44,13 +44,13 @@ body {
 }
 
 .auth-box {
-    background: rgba(27, 16, 51, 0.95);
+    background: rgba(16, 27, 51, 0.95);
     backdrop-filter: blur(12px);
-    border: 1px solid rgba(168, 85, 247, 0.25);
+    border: 1px solid rgba(85, 112, 247, 0.25);
     border-radius: 14px;
     padding: 2.5rem;
     box-shadow: 
-        0 0 25px rgba(168, 85, 247, 0.15),
+        0 0 25px rgba(90, 85, 247, 0.15),
         0 10px 40px rgba(0, 0, 0, 0.4);
     animation: fadeIn 0.5s ease-out;
 }
@@ -328,8 +328,8 @@ body {
     padding: 1rem;
     background: linear-gradient(
         135deg,
-        #7c3aed,
-        #a855f7
+        #3a4ced,
+        #5565f7
     );
     border: none;
     border-radius: 8px;
