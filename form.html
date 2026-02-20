@@ -26,10 +26,6 @@
         <img src="https://www.stemcsclub.org/imgs/official-logo.png"
             alt="STEM CS Club"
             class="logo-img primary-logo">
-
-        <img src="assets/image.png"
-            alt="Hack Logo"
-            class="logo-img secondary-logo">
       </div>
       <!-- Optional sign-out button -->
       <button id="signOut" class="cta-button accent-glow">Sign Out</button>
@@ -101,29 +97,6 @@ We also dive into Deep Learning, where neural networks learn complex patterns fr
                 <h4>Quantum Computing</h4>
                 <p>
                   A field that needs no introduction. We’ve all wondered how Quantum Computers actually function and why they represent the next great leap in human history. In this track, we move past the hype and dive into the mechanics. You’ll explore the fascinating principles of quantum mechanics that power these machines and learn how they are set to solve problems that are impossible for today’s supercomputers. Step into the world of the "impossible."
-              </div>
-              <div class="detail-item">
-                <i class="fas fa-users"></i>
-                <h4>Competitive Programming</h4>
-                <p>
-                  Dive into the realm of elite problem-solving. In the competitive programming track, you won’t just write code; you’ll master the algorithms and data structures that define the world’s top engineers. From optimizing execution time to architecting elegant solutions for complex mathematical challenges, you’ll gain the tools to break down any problem into its most efficient form. In this arena, every millisecond counts and every logic leap matters. If you can think it, you can solve it.
-                </p>
-              </div>
-              <div class="detail-item">
-                <i class="fas fa-rocket"></i>
-                <h4>Cybersecurity</h4>
-                <p>
-                  Cybersecurity is about protecting systems, networks, and data from digital attacks, misuse, and unauthorized access.
-                  In this track, members learn how attackers think, how vulnerabilities appear, and how to defend against threats like malware, phishing, and network intrusions. They explore topics such as securing servers, analyzing suspicious activity, and protecting user data from leaks or breaches.
-                  We also dive into ethical hacking, where students learn how to test systems safely by finding weaknesses before attackers do—helping secure websites, applications, and infrastructure used in the real world.
-                </p>
-              </div>
-              <div class="detail-item">
-                <i class="fas fa-rocket"></i>
-                <h4>Game Development</h4>
-                <p>
-                  Step into the world of professional game development. In the game development track, you won’t just build simple mechanics; you’ll master the Godot Engine to bring entire universes to life. From sculpting fluid animations and crafting nostalgic pixel art to architecting complex game logic, you’ll gain the tools to build any interactive experience from the first sprite to the final build. Whether it’s a high-octane platformer or an immersive RPG, if you can dream the world, you can code the game.
-                </p>
               </div>
             </div>
 
@@ -271,11 +244,8 @@ We also dive into Deep Learning, where neural networks learn complex patterns fr
                     <div class="tracks-container">
                       
                       <div class="choice"><input class="track-choices" id="web" data-target="web-question" type="checkbox" value="web" name=""><span>Web Development</span></div>
-                      <div class="choice"><input class="track-choices" data-target="cyber-question" id="cyber" type="checkbox" value="cyber" name=""><span>Cyber Security</span></div>
                       <div class="choice"><input class="track-choices" data-target="ml-question" id="ml" type="checkbox" value="ml" name=""><span>Machine Learning</span></div>
-                      <div class="choice"><input class="track-choices" data-target="cp-question" id="cp" type="checkbox" value="cp" name=""><span>CP (Competitive programming)</span></div>
                       <div class="choice"><input class="track-choices" data-target="gen-question" id="gen" type="checkbox" value="gen" name=""><span>Generative AI</span></div>
-                      <div class="choice"><input class="track-choices" data-target="game-question" id="game" type="checkbox" value="game" name=""><span>Game Development</span></div>
                       <div class="choice"><input class="track-choices" data-target="quantem-question" id="quantem" type="checkbox" value="quantem" name=""><span>Quantum Computing</span></div>
                     </div>
                     <div class="step-error" style="display:none; color:#ff6b6b; margin-top:1rem;"></div>
@@ -292,18 +262,6 @@ We also dive into Deep Learning, where neural networks learn complex patterns fr
                       </div>
                       <div class="floating-input-group">
                         <textarea id="mlResearch" data-track="web" class="mlResearch" name="mlResearch" placeholder=" " required data-min-words="150" data-max-words="250"></textarea>
-                        <div class="word-count">0/250 words</div>
-                      </div>
-                    </div>
-
-                    <div class="track-question form-group floating-input-group" id="cyber-question">
-                      <div class="question-title required">
-                        Our web developers are setting up a new server for the 6th of October STEM School website. After deployment, the website becomes very slow, and the server logs show an unusually large number of requests coming from different IP addresses.<br>
-                        Determine which technical cybersecurity issue this could indicate, and describe only one step-by-step solution they could use to reduce its impact.(min. 150 words)
-                      </div>
-                    
-                      <div class="floating-input-group">
-                        <textarea id="mlResearch" data-track="cyber" class="mlResearch" name="mlResearch" placeholder=" " required data-min-words="150" data-max-words="250"></textarea>
                         <div class="word-count">0/250 words</div>
                       </div>
                     </div>
@@ -326,22 +284,6 @@ We also dive into Deep Learning, where neural networks learn complex patterns fr
                       </div>
                     </div>
 
-                  <div class="track-question form-group floating-input-group" id="cp-question">
-                      <div class="question-title required">
-                        Orpheus and Codey are standing in the Valley of Numbers. Each stone in the valley has a number written on it — some are negative, some are positive. <br>
-                        Orpheus turns to Codey and says: <br>
-                        “Among all these stones, we must choose two whose combined value is closest to zero.” Codey nods and asks you for help. <br>
-                        How would you approach this problem intellectually until you reach a correct solution? Explain the ideas, observations, and decisions you would make along the way. No code needed — just reasoning.(min. 150 words)
-                      </div>
-                      <div>
-                        <img src="assets/cp.jpeg" alt="cp" class="track-img">
-                      </div>
-                      <div class="floating-input-group">
-                        <textarea id="mlResearch" data-track="cp" class="mlResearch" name="mlResearch" placeholder=" " required data-min-words="150" data-max-words="250"></textarea>
-                        <div class="word-count">0/250 words</div>
-                      </div>
-                    </div>
-
                   <div class="track-question form-group floating-input-group" id="gen-question">
                       <div class="question-title required">
                         In Generative AI, the main idea is giving the model enough information to solve a problem. So, Orpheus and Cody pasted the entire student handbook (500 pages!) into the model to ask a question, but the AI crashed and couldn't answer. <br>
@@ -352,18 +294,7 @@ We also dive into Deep Learning, where neural networks learn complex patterns fr
                         <textarea id="mlResearch" data-track="gen" class="mlResearch" name="mlResearch" placeholder=" " required data-min-words="150" data-max-words="250"></textarea>
                         <div class="word-count">0/250 words</div>
                       </div>
-                  </div>
-                  <div class="track-question form-group floating-input-group" id="game-question">
-                    <div class="question-title required">
-                      Everyone knows 2D and 3D, but Orpheus and Cody have discovered a "hidden dimension": 2.5D. They want to know the secret behind the illusion.<br>
-                      Research and explain what 2.5D actually is and pick one technical trick that makes a flat game look 3D. (min. 150 words)
-                    </div>
-                    
-                    <div class="floating-input-group">
-                      <textarea id="mlResearch" data-track="game" class="mlResearch" name="mlResearch" placeholder=" " required data-min-words="150" data-max-words="250"></textarea>
-                      <div class="word-count">0/250 words</div>
-                    </div>
-                  </div>                
+                  </div>              
 
                   <div class="track-question form-group floating-input-group" id="quantem-question">
                     <div class="question-title required">

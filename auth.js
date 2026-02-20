@@ -25,7 +25,7 @@ function drawMatrix(currentTime) {
     ctx.fillStyle = 'rgba(10, 25, 47, 0.1)';
     ctx.fillRect(0, 0, width, height);
 
-    ctx.fillStyle = "rgba(168, 85, 247, 0.35)";
+    ctx.fillStyle = "rgba(38, 85, 255, 0.35)";
 
     ctx.font = fontSize + 'px monospace';
 

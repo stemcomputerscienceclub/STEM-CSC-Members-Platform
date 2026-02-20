@@ -434,7 +434,7 @@ document.addEventListener("change", (e) => {
    **********************************************/
   function updateCountdown() {
     // Adjust your closing date here
-    const deadline = new Date('2026-02-06T23:59:59').getTime();
+    const deadline = new Date('2026-02-21T23:59:59').getTime();
     const now = new Date().getTime();
     const timeLeft = deadline - now;
 

@@ -2,24 +2,18 @@
    Root Variables
 ========================= */
 :root {
-  --primary-color: #100024;
-  --secondary-color: #19003A;
-
-  --accent-color: #7654CE;
-  --accent-darker: #5e41b8;
-
-  --background-color: #03000B;
-
+  --primary-color: #001B3D;
+  --secondary-color: #002B5C;
+  --accent-color: #00A3FF;
+  --accent-darker: #0088cc; /* Add a darker accent for hover states */
+  --background-color: #00142E;
   --text-light: #FFFFFF;
-  --text-dim: rgba(255, 255, 255, 0.75);
-
-  --gradient-start: #03000B;
-  --gradient-end: #19003A;
-
-  --error-color: #ff4d6d;
-  --success-color: #22c55e;
+  --text-dim: rgba(255, 255, 255, 0.7);
+  --error-color: #ff4444;
+  --success-color: #00C851;
+  --gradient-start: #00142E;
+  --gradient-end: #002347;
 }
-
 
 /* =========================
    Reset & Global
@@ -288,7 +282,7 @@ nav {
 
 .tab-link:hover {
   color: #fff;
-  background: rgba(118, 84, 206, 0.2);
+  background: rgba(84, 100, 206, 0.2);
 }
 
 .tab-link.active {
@@ -317,8 +311,8 @@ main {
   min-height: calc(100vh - 120px);
   background: linear-gradient(
     180deg,
-    #100024 0%,
-    #03000B 100%
+    #000524 0%,
+    #00020b 100%
   );
 }
 
@@ -425,8 +419,8 @@ main {
   padding: 2rem;
   background: linear-gradient(
   145deg,
-  rgba(25, 0, 58, 0.85),
-  rgba(16, 0, 36, 0.95)
+  rgba(0, 10, 58, 0.85),
+  rgba(0, 5, 36, 0.95)
 );
   border-radius: 20px;
   border: 1px solid rgba(118, 84, 206, 0.15);
@@ -542,8 +536,8 @@ main {
   padding: 2rem;
   background: linear-gradient(
     145deg,
-    rgba(16, 0, 36, 0.75),
-    rgba(3, 0, 11, 0.9)
+    rgba(4, 0, 36, 0.75),
+    rgba(0, 0, 11, 0.9)
   );
   border-radius: 15px;
   border: 1px solid rgba(118, 84, 206, 0.15);
@@ -588,8 +582,8 @@ main {
   
   background: linear-gradient(
     135deg,
-    rgba(118, 84, 206, 0.12),
-    rgba(16, 0, 36, 0.9)
+    rgba(84, 92, 206, 0.12),
+    rgba(0, 1, 36, 0.9)
   );
   border-left: 3px solid var(--accent-color);
   color: var(--text-light);
@@ -666,8 +660,8 @@ border: 1px solid rgba(118, 84, 206, 0.25);
   gap: 0.6rem;
   padding: 0.7rem 1rem;
   border-radius: 12px;
-  border: 1px solid rgba(118, 84, 206, 0.25);
-  background: rgba(25, 0, 58, 0.4);
+  border: 1px solid rgba(84, 96, 206, 0.25);
+  background: rgba(3, 0, 58, 0.4);
   cursor: pointer;
   transition: all 0.3s ease;
   user-select: none;
@@ -686,8 +680,8 @@ border: 1px solid rgba(118, 84, 206, 0.25);
   width: 20px;
   height: 20px;
   border-radius: 6px;
-  border: 2px solid rgba(118, 84, 206, 0.4);
-  background: rgba(16, 0, 36, 0.5);
+  border: 2px solid rgba(84, 86, 206, 0.4);
+  background: rgba(0, 1, 36, 0.5);
   position: relative;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -1048,8 +1042,8 @@ border: 1px solid rgba(118, 84, 206, 0.25);
 }
 .accent-glow {
   box-shadow:
-    0 0 12px rgba(118, 84, 206, 0.45),
-    0 0 28px rgba(118, 84, 206, 0.25);
+    0 0 12px rgba(84, 121, 206, 0.45),
+    0 0 28px rgba(84, 123, 206, 0.25);
 }
 .modal-content {
   position: absolute;
@@ -1057,7 +1051,7 @@ border: 1px solid rgba(118, 84, 206, 0.25);
   left: 50%;
   transform: translate(-50%, -50%) scale(0.9);
   opacity: 0;
-  background: rgba(25, 0, 58, 0.6);
+  background: rgba(0, 13, 58, 0.6);
   padding: 3rem;
   border-radius: 20px;
   text-align: center;
@@ -1132,9 +1126,8 @@ border: 1px solid rgba(118, 84, 206, 0.25);
 footer {
   text-align: center;
   padding: 2rem 1rem;
-  margin-top: 3rem;
   color: var(--text-light);
-  border-top: 1px solid rgba(118, 84, 206, 0.25);
+  border-top: 1px solid rgba(50, 44, 202, 0.25);
   background: rgba(16, 0, 36, 0.6);
 }
 
