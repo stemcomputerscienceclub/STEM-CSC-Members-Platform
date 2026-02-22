@@ -434,7 +434,7 @@ document.addEventListener("change", (e) => {
    **********************************************/
   function updateCountdown() {
     // Adjust your closing date here
-    const deadline = new Date('2026-02-21T23:59:59').getTime();
+    const deadline = new Date('2026-02-22T23:59:59').getTime();
     const now = new Date().getTime();
     const timeLeft = deadline - now;
 
@@ -642,7 +642,10 @@ document.addEventListener("change", (e) => {
           }, 100);
         }
       }
-
+      window.scrollTo({
+        top:0,
+        behavior:'smooth'
+      })
       // Clear localStorage since submission is done
       localStorage.removeItem('csclubFormData');
 
