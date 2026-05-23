@@ -7,12 +7,12 @@ import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.2.0/firebase
   // Your web app's Firebase configuration
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAASMdxsb__WKXJYtNu2A-CFLADqCwRGo4",
-  authDomain: "stem-csc-members.firebaseapp.com",
-  projectId: "stem-csc-members",
-  storageBucket: "stem-csc-members.firebasestorage.app",
-  messagingSenderId: "523867315988",
-  appId: "1:523867315988:web:ced7474cd7f4f4e2d4ec01"
+    apiKey: "AIzaSyBWCcNE4XmKJ59K7QB-7oacQo4ytMhPih0",
+    authDomain: "online-chapter-2026.firebaseapp.com",
+    projectId: "online-chapter-2026",
+    storageBucket: "online-chapter-2026.firebasestorage.app",
+    messagingSenderId: "772661224982",
+    appId: "1:772661224982:web:d54a4c3fb9c777853b3737"
 };
 
 

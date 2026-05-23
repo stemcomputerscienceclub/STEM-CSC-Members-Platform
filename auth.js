@@ -1,3 +1,17 @@
+
+const firebaseConfig = {
+    apiKey: "AIzaSyBWCcNE4XmKJ59K7QB-7oacQo4ytMhPih0",
+    authDomain: "online-chapter-2026.firebaseapp.com",
+    projectId: "online-chapter-2026",
+    storageBucket: "online-chapter-2026.firebasestorage.app",
+    messagingSenderId: "772661224982",
+    appId: "1:772661224982:web:d54a4c3fb9c777853b3737"
+};
+
+
+    // Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
 // Matrix Animation
 const canvas = document.getElementById('matrixCanvas');
 const ctx = canvas.getContext('2d');

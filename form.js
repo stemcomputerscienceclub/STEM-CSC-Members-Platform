@@ -3,14 +3,15 @@
  **********************************************/
 
 // Firebase Configuration and Initialization
-const firebaseConfig = {
-  apiKey: "AIzaSyAASMdxsb__WKXJYtNu2A-CFLADqCwRGo4",
-  authDomain: "stem-csc-members.firebaseapp.com",
-  projectId: "stem-csc-members",
-  storageBucket: "stem-csc-members.firebasestorage.app",
-  messagingSenderId: "523867315988",
-  appId: "1:523867315988:web:ced7474cd7f4f4e2d4ec01"
-};
+  const firebaseConfig = {
+    apiKey: "AIzaSyBWCcNE4XmKJ59K7QB-7oacQo4ytMhPih0",
+    authDomain: "online-chapter-2026.firebaseapp.com",
+    projectId: "online-chapter-2026",
+    storageBucket: "online-chapter-2026.firebasestorage.app",
+    messagingSenderId: "772661224982",
+    appId: "1:772661224982:web:d54a4c3fb9c777853b3737"
+  };
+
 firebase.initializeApp(firebaseConfig);
 
 // Add authentication check
@@ -434,7 +435,7 @@ document.addEventListener("change", (e) => {
    **********************************************/
   function updateCountdown() {
     // Adjust your closing date here
-    const deadline = new Date('2026-02-22T23:59:59').getTime();
+    const deadline = new Date('2026-06-22T23:59:59').getTime();
     const now = new Date().getTime();
     const timeLeft = deadline - now;
 
@@ -504,7 +505,7 @@ document.addEventListener("change", (e) => {
    * Limiting Track Selection
    **********************************************/
   // Limit to maximum 3 selections
-  const MAX_SELECTIONS = 5;
+  const MAX_SELECTIONS = 3;
   const checkboxes = document.querySelectorAll('.track-choices');
   
 
@@ -600,17 +601,16 @@ document.addEventListener("change", (e) => {
       });
       // Gather form data
       const formData = {
-        personalInformation: {
           fullName: document.getElementById('fullName').value.trim(),
           whatsapp: document.getElementById('whatsapp').value.trim(),
-          email: document.getElementById('email').value.trim()
-        },
-        essays: {
+          email: document.getElementById('email').value.trim(),
           techEssay: document.getElementById('techEssay').value.trim(),
-          goalEssay: document.getElementById('goalEssay').value.trim()
-        },
-        tracks: selectedTracks,
-        research,
+          goalEssay: document.getElementById('goalEssay').value.trim(),
+          tracks: selectedTracks,
+          webResearch: document.getElementById("webResearch").value.trim(),
+          mlResearch:document.getElementById("mlResearch").value.trim(),
+          genResearch: document.getElementById("genResearch").value.trim(),
+          gameResearch: document.getElementById("gameResearch").value.trim(),
         experience: {
           hasExperience:
             document.querySelector('input[name="hasExperience"]:checked')?.value || '',
@@ -626,10 +626,11 @@ document.addEventListener("change", (e) => {
 
       // Save to Firestore
       const db = firebase.firestore();
-      console.log(formData.personalInformation.email);
+      console.log(formData.email);
       
       await db.collection('applications').doc(sessionStorage.getItem("email",user.email)).set(formData);
 
+      document.getElementById("submit-btn").disabled=true;
       // Show success modal
       const successModal = document.getElementById('successModal');
       if (successModal) {
