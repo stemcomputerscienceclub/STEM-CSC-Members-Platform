@@ -3,14 +3,14 @@
  **********************************************/
 
 // Firebase Configuration and Initialization
-  const firebaseConfig = {
-    apiKey: "AIzaSyBWCcNE4XmKJ59K7QB-7oacQo4ytMhPih0",
-    authDomain: "online-chapter-2026.firebaseapp.com",
-    projectId: "online-chapter-2026",
-    storageBucket: "online-chapter-2026.firebasestorage.app",
-    messagingSenderId: "772661224982",
-    appId: "1:772661224982:web:d54a4c3fb9c777853b3737"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyBWCcNE4XmKJ59K7QB-7oacQo4ytMhPih0",
+  authDomain: "online-chapter-2026.firebaseapp.com",
+  projectId: "online-chapter-2026",
+  storageBucket: "online-chapter-2026.firebasestorage.app",
+  messagingSenderId: "772661224982",
+  appId: "1:772661224982:web:d54a4c3fb9c777853b3737"
+};
 
 firebase.initializeApp(firebaseConfig);
 
@@ -26,8 +26,8 @@ firebase.auth().onAuthStateChanged(async (user) => {
     <h1>Your application was already submitted, no decision update yet</h1></section>`
     return;
   }
-sessionStorage.setItem("email",user.email);
-  
+  sessionStorage.setItem("email", user.email);
+
   // Save to Firestore
   try {
 
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
     switchTab('application'); // Default if no hash
   }
 
-  
+
   /**********************************************
    * Multi-Step Form Navigation
    **********************************************/
@@ -104,20 +104,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const backBtn = document.querySelector('.back-btn');
   const nextBtn = document.querySelector('.next-btn');
 
-document.addEventListener("change", (e) => {
-  const checkbox = e.target;
+  document.addEventListener("change", (e) => {
+    const checkbox = e.target;
 
-  if (!checkbox.matches('input[type="checkbox"][data-target]')) return;
+    if (!checkbox.matches('input[type="checkbox"][data-target]')) return;
 
-  const section = document.getElementById(checkbox.dataset.target);
-  if (!section) return;
+    const section = document.getElementById(checkbox.dataset.target);
+    if (!section) return;
 
-  section.classList.toggle("active", checkbox.checked);
+    section.classList.toggle("active", checkbox.checked);
 
-  section.querySelectorAll("[required]").forEach(el => {
-    el.required = checkbox.checked;
+    section.querySelectorAll("[required]").forEach(el => {
+      el.required = checkbox.checked;
+    });
   });
-});
 
   function updateFormSteps() {
     // Hide all sections
@@ -388,12 +388,12 @@ document.addEventListener("change", (e) => {
   /**********************************************
    * Word Count Functionality
    **********************************************/
-  function updateWordCount(textarea) {    
-    const wordCount = getWordCount(textarea.value);    
+  function updateWordCount(textarea) {
+    const wordCount = getWordCount(textarea.value);
     const maxWords = parseInt(textarea.getAttribute('data-max-words') || '200', 10);
     const minWords = parseInt(textarea.getAttribute('data-min-words') || '0', 10);
     const countDisplay = textarea.nextElementSibling;
-    
+
     if (countDisplay) {
       countDisplay.textContent = `${wordCount}/${maxWords} words`;
       if (wordCount < minWords || wordCount > maxWords) {
@@ -501,23 +501,23 @@ document.addEventListener("change", (e) => {
   const countdownInterval = setInterval(updateCountdown, 1000);
   updateCountdown();
 
-    /**********************************************
-   * Limiting Track Selection
-   **********************************************/
+  /**********************************************
+ * Limiting Track Selection
+ **********************************************/
   // Limit to maximum 3 selections
   const MAX_SELECTIONS = 3;
   const checkboxes = document.querySelectorAll('.track-choices');
-  
+
 
   checkboxes.forEach(checkbox => {
-      checkbox.addEventListener('change', function() {
-          const checkedCount = document.querySelectorAll('.track-choices:checked').length;
-          
-          if (checkedCount > MAX_SELECTIONS) {
-              alert(`You can only select up to ${MAX_SELECTIONS} options`);
-              this.checked = false; // Uncheck the current one
-          }
-      });
+    checkbox.addEventListener('change', function () {
+      const checkedCount = document.querySelectorAll('.track-choices:checked').length;
+
+      if (checkedCount > MAX_SELECTIONS) {
+        alert(`You can only select up to ${MAX_SELECTIONS} options`);
+        this.checked = false; // Uncheck the current one
+      }
+    });
   });
   const selectedTracks = [...document.querySelectorAll(
     'input[type="checkbox"]:checked'
@@ -539,7 +539,7 @@ document.addEventListener("change", (e) => {
   });
 
   async function loadUserData(userId) {
-    
+
     try {
       const userDoc = await firebase.firestore().collection('users').doc(userId).get();
       if (userDoc.exists) {
@@ -601,16 +601,17 @@ document.addEventListener("change", (e) => {
       });
       // Gather form data
       const formData = {
-          fullName: document.getElementById('fullName').value.trim(),
-          whatsapp: document.getElementById('whatsapp').value.trim(),
-          email: document.getElementById('email').value.trim(),
-          techEssay: document.getElementById('techEssay').value.trim(),
-          goalEssay: document.getElementById('goalEssay').value.trim(),
-          tracks: selectedTracks,
-          webResearch: document.getElementById("webResearch").value.trim(),
-          mlResearch:document.getElementById("mlResearch").value.trim(),
-          genResearch: document.getElementById("genResearch").value.trim(),
-          gameResearch: document.getElementById("gameResearch").value.trim(),
+        fullName: document.getElementById('fullName').value.trim(),
+        whatsapp: document.getElementById('whatsapp').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        techEssay: document.getElementById('techEssay').value.trim(),
+        goalEssay: document.getElementById('goalEssay').value.trim(),
+        tracks: selectedTracks,
+        webResearch: document.getElementById("webResearch").value.trim(),
+        mlResearch: document.getElementById("mlResearch").value.trim(),
+        genResearch: document.getElementById("genResearch").value.trim(),
+        gameResearch: document.getElementById("gameResearch").value.trim(),
+        ambassadorCode: document.getElementById("ambassador").value.trim(),
         experience: {
           hasExperience:
             document.querySelector('input[name="hasExperience"]:checked')?.value || '',
@@ -627,10 +628,10 @@ document.addEventListener("change", (e) => {
       // Save to Firestore
       const db = firebase.firestore();
       console.log(formData.email);
-      
-      await db.collection('applications').doc(sessionStorage.getItem("email",user.email)).set(formData);
 
-      document.getElementById("submit-btn").disabled=true;
+      await db.collection('applications').doc(sessionStorage.getItem("email", user.email)).set(formData);
+
+      document.getElementById("submit-btn").disabled = true;
       // Show success modal
       const successModal = document.getElementById('successModal');
       if (successModal) {
@@ -643,10 +644,7 @@ document.addEventListener("change", (e) => {
           }, 100);
         }
       }
-      window.scrollTo({
-        top:0,
-        behavior:'smooth'
-      })
+
       // Clear localStorage since submission is done
       localStorage.removeItem('csclubFormData');
 
@@ -661,7 +659,7 @@ document.addEventListener("change", (e) => {
   /**********************************************
    * Close Modal
    **********************************************/
-  
+
   window.closeModal = function () {
     const successModal = document.getElementById('successModal');
     if (successModal) {
